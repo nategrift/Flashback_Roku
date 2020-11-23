@@ -23,7 +23,7 @@ Purpose of this project was to grow knowledge in created web applications that c
 
 The content of this project will be coming from an api we will be creating in the spring of 2021.  The content itself will not be used for profit and only for education purposes only.  
 
-#####NOTE: Project and Content are for education use only.  No profit will come from this project
+##### NOTE: Project and Content are for education use only.  No profit will come from this project
 
 ### License
 
