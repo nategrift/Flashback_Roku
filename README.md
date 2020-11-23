@@ -19,6 +19,11 @@ Purpose of this project was to grow knowledge in created web applications that c
 - Developer - Nate Grift
 - Designer - Spencer Mellor
 
+### Current Prototype
+
+Current Prototype can be viewed here. 
+[Prototype](https://xd.adobe.com/view/77a94f5d-50a2-4f31-89f1-19972e8b7ee6-22fa/?fullscreen&hints=off)
+
 ### Content
 
 The content of this project will be coming from an api we will be creating in the spring of 2021.  The content itself will not be used for profit and only for education purposes only.  
