@@ -39,3 +39,74 @@ MIT
 The current stage of devleopment is planning and designing phase.  We have not developed anything.  
 
 `Come back soon to see more...`
+
+
+## API
+
+### Media
+*Please note: All media requests require bearer JWT authentication*
+
+#### Get Media
+GET `/media`
+**Params:**
+  - type *(Optional)*
+  - range *(Optional range of released dates)*
+    - `90` *(Years 1990 - 2000)*
+    - `80` *(Years 1980 - 1990)*
+    - `70` *(Years 1970 - 1980)*
+    - `60` *(Years 1960 - 1970)*
+    - `50` *(Years 1950 - 1960)*
+
+
+#### Get One Media by ID
+GET `/media/<media_id>`
+
+#### Like Media
+POST `/media/<media_id>/like-media`
+
+#### UnLike Media
+DELETE `/media/<media_id>/like-media`
+
+#### Comment on Media
+POST `/media/<media_id>/comment`
+
+**Params (BODY):**
+  - copy *(comment text)*
+
+#### Comment on Media
+Delete `/media/<media_id>/comment/<comment_id>`
+
+
+
+### Accounts
+
+#### Create Account
+POST `/auth/create-account`
+
+**Params (BODY):**
+  - email 
+  - password 
+  - username 
+
+#### login
+POST `/auth/login`
+
+**Params (BODY):**
+  - password 
+  - username 
+
+
+***Please note: All requests below this line require require bearer JWT authentication*
+
+
+#### Get Profiles
+GET `/profiles`
+
+#### Select Profile
+GET `/profiles`
+  **Params:**
+  - profile_id 
+  - pin *(if it is admin account)* 
+
+
+
