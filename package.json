@@ -1,0 +1,25 @@
+{
+  "name": "flashback",
+  "version": "0.1.0",
+  "description": "Flashback Roku Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "sass --no-source-map --watch assets/scss:public/css",
+    "startdev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "node-sass": "^5.0.0",
+    "nodemon": "^2.0.6"
+  }
+}

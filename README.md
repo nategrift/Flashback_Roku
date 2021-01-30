@@ -3,6 +3,12 @@
 # Flashback 
 ### A Roku App
 
+### To use
+To use the application you need to create a .env file with the following format
+```[env]
+
+```
+
 PLEASE NOTE: ***Still in Development***
 
 This project is a application for roku which shows movies from the past.  Movies that are flashback to the past.  It contains TV Shows, Movies, and Music from prior to the 1990's.  
