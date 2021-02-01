@@ -5,7 +5,7 @@ let config = require('../config');
 
 module.exports.errorResponse = function errorResponse(status, err, res) {
 
-  // if error connecting to database then return
+  // if error connecting to database 
     if (err.includes('ECONNREFUSED')) {
       err = "Error: Unable to connect to Database, Sorry for the inconvenience. Please try again later"
     }

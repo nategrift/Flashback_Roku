@@ -56,12 +56,10 @@ The current stage of devleopment is planning and designing phase.  We have not d
 GET `/media`
 **Params:**
   - type *(Optional)*
-  - range *(Optional range of released dates)*
-    - `90` *(Years 1990 - 2000)*
-    - `80` *(Years 1980 - 1990)*
-    - `70` *(Years 1970 - 1980)*
-    - `60` *(Years 1960 - 1970)*
-    - `50` *(Years 1950 - 1960)*
+    - Options: [`movie`,`audio`,`tvshow`]
+  - rangemin *(Optional, but nees to be with rangemax and types)*
+  - rangemax *(Optional, but nees to be with rangemin and types)*
+
 
 #### Get Media types
 GET `/media/types`

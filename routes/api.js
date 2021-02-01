@@ -8,9 +8,7 @@ const authRoutes = require('./auth');
 const tokensMiddleware = require('../middleware/token.js');
 
 // API Routes
-// router.use('/media',tokensMiddleware.checkToken, mediaRoutes);
-router.use('/media', mediaRoutes);
-
+router.use('/media',tokensMiddleware.checkToken, mediaRoutes);
 // Api Routes (Auth)
 router.use('/auth', authRoutes);
 

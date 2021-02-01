@@ -4,20 +4,7 @@ const User = require('../models/user')
 
 const emailValidator = require('deep-email-validator');
 
-function newError(err, status) {
-  const error = new Error(err);
-
-  // Assign HTTP Status code
-  if (err.statusCode) {
-    error.statusCode = err.statusCode;
-  } else if (status) {
-    error.statusCode = status;
-  } else {
-    error.statusCode = 500;
-  }
-  
-  return error;
-}
+const newError = require('../util/error');
 
 exports.postLogin = async (req, res, next) => {
     let username = req.body.username;
@@ -27,6 +14,7 @@ exports.postLogin = async (req, res, next) => {
       return next(newError('Error: Please fill out all required fields', 403));
     }
 
+    // Check username and password to log user in
     try {
       const user = await User.checkUsernameAndPassword(username, password);
       successResponse(user.account_username, user.account_id, res);
@@ -67,7 +55,6 @@ exports.postCreateAccount = async (req, res, next) => {
       const user = await User.createUser(username, password, email)
 
       // If user created, return success
-
       if (user) {
         successResponse(user.account_username, user.account_id, res);
       } else {
