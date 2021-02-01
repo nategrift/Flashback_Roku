@@ -63,6 +63,8 @@ GET `/media`
     - `60` *(Years 1960 - 1970)*
     - `50` *(Years 1950 - 1960)*
 
+#### Get Media types
+GET `/media/types`
 
 #### Get One Media by ID
 GET `/media/<media_id>`

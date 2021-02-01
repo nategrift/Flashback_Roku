@@ -8,4 +8,5 @@ const router = express.Router();
 router.get('/', mediaController.getMedia);
 
 
+
 module.exports = router;
