@@ -24,7 +24,7 @@ app.use('/', (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  const { errorResponse } = require('./util/reponses');
+  const { errorResponse } = require('./util/responses');
   errorResponse(error.statusCode, error.message, res);
 })
 

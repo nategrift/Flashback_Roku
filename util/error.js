@@ -1,4 +1,4 @@
-module.exports.default = function newError(err, status) {
+module.exports = function newError(err, status) {
   const error = new Error(err);
 
   // Assign HTTP Status code

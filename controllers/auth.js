@@ -1,5 +1,5 @@
 
-const { successResponse } = require('../util/reponses');
+const { successResponse } = require('../util/responses');
 const User = require('../models/user')
 
 const emailValidator = require('deep-email-validator');

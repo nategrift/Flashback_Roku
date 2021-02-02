@@ -1,4 +1,4 @@
-const { query } = require('../util/database');
+
 const newError = require('../util/error');
 
 const Media = require('../models/media')
@@ -8,10 +8,11 @@ exports.getMedia = async (req, res, next) => {
     const type = req.query.type;
     const rangemin = req.query.rangemin;
     const rangemax = req.query.rangemax;
- 
+
+    console.log(req.level)
 
     try {
-      let media = await Media.getMedia(type, rangemin, rangemax);
+      let media = await Media.getMedia(type, rangemin, rangemax, req.level);
       res.status(201).json(media);
     } catch (err) {
       return next(newError(err))

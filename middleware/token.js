@@ -32,6 +32,7 @@ const checkToken = (req, res, next) => {
       } else {
         req.username = decoded.username;
         req.id = decoded.id;
+        req.level = decoded.access;
         next();
       }
     });
