@@ -1,4 +1,4 @@
 .DS_Store
-/public/media
+/media
 .env
 /node_modules

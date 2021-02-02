@@ -28,12 +28,18 @@ exports.postCreateAccount = async (req, res, next) => {
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
+    let pin = req.body.pin;
+
     try {
       // Check if all params are present
-      if (!username || !email || !password) {
+      if (!username || !email || !password || !pin) {
         return next(newError('Error: Please fill out all required fields', 409));
       }
 
+      // Check pin
+      if (pin.length !== 4 || !/^\d+$/.test(pin)) {
+        return next(newError('Invalid Admin Pin', 409));
+      }
       // Query Database for existing user
       const existingUser = await User.getUserByUsername(username);
       if (existingUser) {
@@ -52,7 +58,7 @@ exports.postCreateAccount = async (req, res, next) => {
       }
 
       // Insert Data into database
-      const user = await User.createUser(username, password, email)
+      const user = await User.createUser(username, password, email, pin)
 
       // If user created, return success
       if (user) {

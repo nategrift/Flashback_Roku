@@ -2,7 +2,7 @@ const db = require('../util/database');
 
 module.exports = class User {
 
-  static async createUser(username, password, email) {
+  static async createUser(username, password, email, adminpin) {
     await db.execute(
       `INSERT INTO tbl_accounts (account_username, account_password, account_email) VALUES (?, ?, ?);`,
       [username, password, email]
@@ -16,6 +16,13 @@ module.exports = class User {
         [username]
     );
     
+    await db.execute(
+      `INSERT INTO tbl_profiles (profiles_account_id, profiles_name, profiles_icon, profiles_level_id, profiles_pin) 
+      VALUES (?, ?, ?, ?, ?),
+      (?, ?, ?, ?, NULL);`,
+      [user[0].account_id, "Admin", "admin.jpg", 1, adminpin, user[0].account_id, "Kids", "kids.jpg", 2]
+    );
+
     if (user) {
       return user[0];
     }
@@ -64,7 +71,10 @@ module.exports = class User {
     const [
       user,
     ] = await db.execute(
-        `SELECT p.* FROM tbl_profiles as p Left JOIN tbl_accounts AS a ON p.profiles_account_id = a.account_id WHERE a.account_username = ?;`,
+        `SELECT p.profiles_id as id, p.profiles_name as name, p.profiles_icon as icon, l.levels_protected as levels FROM tbl_profiles as p 
+        Left JOIN tbl_accounts AS a ON p.profiles_account_id = a.account_id 
+        Left JOIN tbl_levels AS l ON p.profiles_level_id = l.levels_id
+        WHERE a.account_username = ?;`,
         [username]
     );
 

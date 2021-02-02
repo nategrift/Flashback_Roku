@@ -73,6 +73,8 @@ POST `/media/<media_id>/like-media`
 #### UnLike Media
 DELETE `/media/<media_id>/like-media`
 
+
+** Comment section not created yet, possible addition in future ** 
 #### Comment on Media
 POST `/media/<media_id>/comment`
 

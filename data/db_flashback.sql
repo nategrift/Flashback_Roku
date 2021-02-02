@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jan 29, 2021 at 10:26 PM
+-- Generation Time: Feb 02, 2021 at 07:45 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -33,13 +33,6 @@ CREATE TABLE `tbl_accounts` (
   `account_email` varchar(320) NOT NULL,
   `account_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tbl_accounts`
---
-
-INSERT INTO `tbl_accounts` (`account_id`, `account_username`, `account_password`, `account_email`, `account_date`) VALUES
-(1, 'demo123', 'pass123', 'demo@example.com', '2021-01-29 17:42:13');
 
 -- --------------------------------------------------------
 
@@ -142,6 +135,14 @@ CREATE TABLE `tbl_media_likes` (
   `likes_user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tbl_media_likes`
+--
+
+INSERT INTO `tbl_media_likes` (`likes_id`, `likes_media_id`, `likes_user_id`) VALUES
+(32, 13, 2),
+(36, 11, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -150,17 +151,18 @@ CREATE TABLE `tbl_media_likes` (
 
 CREATE TABLE `tbl_media_types` (
   `types_id` int(11) NOT NULL,
-  `types_title` varchar(40) NOT NULL
+  `types_value` varchar(40) NOT NULL,
+  `types_title` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tbl_media_types`
 --
 
-INSERT INTO `tbl_media_types` (`types_id`, `types_title`) VALUES
-(1, 'movie'),
-(2, 'tvshow'),
-(3, 'audio');
+INSERT INTO `tbl_media_types` (`types_id`, `types_value`, `types_title`) VALUES
+(1, 'movie', 'Movies'),
+(2, 'tvshow', 'Tv Shows'),
+(3, 'audio', 'Music');
 
 -- --------------------------------------------------------
 
@@ -176,14 +178,6 @@ CREATE TABLE `tbl_profiles` (
   `profiles_level_id` int(11) NOT NULL,
   `profiles_pin` int(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tbl_profiles`
---
-
-INSERT INTO `tbl_profiles` (`profiles_id`, `profiles_account_id`, `profiles_name`, `profiles_icon`, `profiles_level_id`, `profiles_pin`) VALUES
-(1, 1, 'Admin', 'admin.jpg', 1, 1234),
-(2, 1, 'Kids', 'kids.jpg', 2, NULL);
 
 --
 -- Indexes for dumped tables
@@ -239,7 +233,7 @@ ALTER TABLE `tbl_profiles`
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `tbl_comments`
@@ -263,7 +257,7 @@ ALTER TABLE `tbl_media`
 -- AUTO_INCREMENT for table `tbl_media_likes`
 --
 ALTER TABLE `tbl_media_likes`
-  MODIFY `likes_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `likes_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tbl_media_types`
@@ -275,7 +269,7 @@ ALTER TABLE `tbl_media_types`
 -- AUTO_INCREMENT for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
-  MODIFY `profiles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `profiles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
