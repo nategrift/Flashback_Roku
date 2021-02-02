@@ -6,7 +6,11 @@
 ### To use
 To use the application you need to create a .env file with the following format
 ```[env]
-
+PORT=5000
+DB_HOST=localhost
+DB_USERNAME=root
+DB_PASSWORD=root
+DB_PORT=8889
 ```
 
 PLEASE NOTE: ***Still in Development***
@@ -75,13 +79,13 @@ DELETE `/media/<media_id>/like-media`
 
 
 ** Comment section not created yet, possible addition in future ** 
-#### Comment on Media
+#### Comment on Media (Not Created yet)
 POST `/media/<media_id>/comment`
 
 **Params (BODY):**
   - copy *(comment text)*
 
-#### Comment on Media
+#### Comment on Media (Not Created yet)
 Delete `/media/<media_id>/comment/<comment_id>`
 
 
