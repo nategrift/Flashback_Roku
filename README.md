@@ -3,6 +3,16 @@
 # Flashback 
 ### A Roku App
 
+### To use
+To use the application you need to create a .env file with the following format
+```[env]
+PORT=5000
+DB_HOST=localhost
+DB_USERNAME=root
+DB_PASSWORD=root
+DB_PORT=8889
+```
+
 PLEASE NOTE: ***Still in Development***
 
 This project is a application for roku which shows movies from the past.  Movies that are flashback to the past.  It contains TV Shows, Movies, and Music from prior to the 1990's.  
@@ -50,13 +60,13 @@ The current stage of devleopment is planning and designing phase.  We have not d
 GET `/media`
 **Params:**
   - type *(Optional)*
-  - range *(Optional range of released dates)*
-    - `90` *(Years 1990 - 2000)*
-    - `80` *(Years 1980 - 1990)*
-    - `70` *(Years 1970 - 1980)*
-    - `60` *(Years 1960 - 1970)*
-    - `50` *(Years 1950 - 1960)*
+    - Options: [`movie`,`audio`,`tvshow`]
+  - rangemin *(Optional, but nees to be with rangemax and types)*
+  - rangemax *(Optional, but nees to be with rangemin and types)*
 
+
+#### Get Media types
+GET `/media/types`
 
 #### Get One Media by ID
 GET `/media/<media_id>`
@@ -67,13 +77,15 @@ POST `/media/<media_id>/like-media`
 #### UnLike Media
 DELETE `/media/<media_id>/like-media`
 
-#### Comment on Media
+
+** Comment section not created yet, possible addition in future ** 
+#### Comment on Media (Not Created yet)
 POST `/media/<media_id>/comment`
 
 **Params (BODY):**
   - copy *(comment text)*
 
-#### Comment on Media
+#### Comment on Media (Not Created yet)
 Delete `/media/<media_id>/comment/<comment_id>`
 
 
