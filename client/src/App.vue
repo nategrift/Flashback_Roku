@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <media-player />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import mediaPlayer from './components/MediaPlayer.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    mediaPlayer
   }
 }
 </script>
@@ -21,6 +20,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+body {
+  margin: 0;
 }
 </style>
