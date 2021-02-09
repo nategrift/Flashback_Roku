@@ -11,8 +11,8 @@ module.exports.errorResponse = function errorResponse(status, err, res) {
     }
 
     return res.status(status).json({
-        success: false,
-        error: err,
+        ok: false,
+        message: err,
     });
 }
 
@@ -25,9 +25,12 @@ module.exports.successResponse = function successResponse(username, id, res) {
   );
   // Return token and Username
   res.json({
-    success: true,
+    ok: true,
+    message: 'Success',
     username: username,
+    userId: id,
     token: token,
+    tokenExpiration: 86400
   });
 }
 
@@ -44,10 +47,12 @@ module.exports.profileSuccess = function profileSuccess(profile, res) {
   );
   // Return token and Username
   res.json({
-    success: true,
+    ok: true,
+    message: 'Success',
     access: profile.level,
     profileid: profile.profiles_id,
     username: profile.username,
     token: token,
+    tokenExpiration: 86400
   });
 }
