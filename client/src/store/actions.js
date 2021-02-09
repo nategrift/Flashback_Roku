@@ -1,5 +1,7 @@
 import config from '../config.js';
 
+let clearTokenTimer;
+
 export default {
   async login(context, payload) {
     const requestBody = {
@@ -21,9 +23,19 @@ export default {
       throw error;
     }
 
+    const expiresIn = +responseData.tokenExpiration * 1000;
+    const expirationDate = new Date().getTime() + expiresIn;
+    
+    localStorage.setItem('token', responseData.token);
+    localStorage.setItem('userId', responseData.userId);
+    localStorage.setItem('tokenExpiration', expirationDate);
+
+    clearTokenTimer = setTimeout(function() {
+      context.dispatch('autoLogout');
+    }, expiresIn)
+
     context.commit('setUser', {
       token: responseData.token,
-      tokenExpiration: responseData.tokenExpiration,
       userId: responseData.userId,
     });
     context.commit('resetError');
@@ -57,9 +69,18 @@ export default {
       throw error;
     }
 
+    const expiresIn = +responseData.tokenExpiration * 1000;
+    const expirationDate = new Date().getTime() + expiresIn;
+
+
+    localStorage.setItem('tokenExpiration', expirationDate);
+    localStorage.setItem('token', responseData.token);
+    localStorage.setItem('userId', responseData.userId);
+
+
+
     context.commit('setUser', {
       token: responseData.token,
-      tokenExpiration: responseData.tokenExpiration,
       userId: responseData.userId,
     });
     context.commit('resetError');
@@ -69,4 +90,49 @@ export default {
       error: payload.error.message || payload.error || 'An error occured',
     });
   },
+  logout(context) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('profile');
+    localStorage.removeItem('tokenExpiration');
+
+    clearTimeout(clearTokenTimer);
+
+    context.commit('setUser', {
+      token: '',
+      userId: '',
+      profile: ''
+    });
+    context.commit('resetError');
+    
+  },
+  tryLogin(context) {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+    const expiresIn = +tokenExpiration - new Date().getTime();
+    
+    // If it will expire in 10 seconds
+    if (expiresIn < 10000) {
+      return;
+    }
+
+    clearTokenTimer = setTimeout(function() {
+      context.dispatch('autoLogout');
+    }, expiresIn)
+
+    const profile = localStorage.getItem('profile');
+    if (token && userId) {
+      context.commit('setUser', {
+        token: token,
+        userId: userId,
+        profile: profile || ''
+      })
+    }
+  },
+  autoLogout(context) {
+    context.dispatch('logout');
+    context.commit('setAutoLogout')
+  }
 };

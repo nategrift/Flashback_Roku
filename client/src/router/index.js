@@ -5,6 +5,8 @@ import Login from '../pages/Login.vue'
 import Profiles from '../pages/Profiles.vue'
 import NotFound from '../pages/404.vue'
 
+import store from '../store/index.js'
+
 const routes = [
   {
     path: '/',
@@ -14,17 +16,20 @@ const routes = [
   {
     path: '/signup',
     name: 'Sign Up',
-    component: SignUp
+    component: SignUp,
+    meta: {requiresNoAuth: true}
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {requiresNoAuth: true}
   },
   {
     path: '/profiles',
     name: 'Profiles',
-    component: Profiles
+    component: Profiles,
+    meta: {requiresAuth: true}
   },
   {
     // Not found 404 page
@@ -37,6 +42,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach(function(to, from, next) {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    next('/login');
+  } else if (to.meta.requiresNoAuth && store.getters.isAuthenticated) {
+    next('/profiles');
+  } else {
+    next();
+  }
 })
 
 export default router

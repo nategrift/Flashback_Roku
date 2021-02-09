@@ -17,6 +17,19 @@ export default {
   computed: {
     error() {
       return this.$store.getters.error
+    },
+    isAutoLogout() {
+      return this.$store.getters.isAutoLogout;
+    }
+  },
+  created() {
+    this.$store.dispatch('tryLogin');
+  },
+  watch: {
+    isAutoLogout(currentValue, oldValue) {
+      if (currentValue && currentValue !== oldValue) {
+        this.$router.replace('/')
+      }
     }
   }
 }

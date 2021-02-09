@@ -7,10 +7,22 @@
         <router-link to='login'>Login</router-link>
         <router-link to='signup'>Signup</router-link>
         <router-link to='profiles'>Profiles</router-link>
+        <a @click="logout">Logout</a>
       </li>
     </ul>
   </header>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.replace('./')
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 @import "../assets/scss/_variables.scss";
@@ -32,6 +44,7 @@ ul {
       color: white;
       text-decoration: none;
       font-size: 1.6rem;
+      cursor: pointer;
     }
   }
 }

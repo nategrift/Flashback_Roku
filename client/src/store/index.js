@@ -9,9 +9,9 @@ const store = createStore({
     return {
       token: '',
       userId: '',
-      tokenExpiration: '',
       profile: null,
-      error: ''
+      error: '',
+      didAutoLogout: false
     };
   },
   mutations: rootMutations,
