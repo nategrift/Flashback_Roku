@@ -41,7 +41,7 @@ export default {
 .login form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
 </style>

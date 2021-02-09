@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="signup">
     <h1>Sign Up</h1>
     <form @submit.prevent="submitLoginForm">
       <base-input label="name" type="name" v-model.trim="name"></base-input>
@@ -40,10 +40,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login form {
+.signup form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  
 }
 </style>
