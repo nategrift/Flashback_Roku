@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Sign Up</h1>
+    <h1>Login</h1>
     <form @submit.prevent="submitLoginForm">
       <base-input label="email" type="email" v-model.trim="email"></base-input>
       <base-input
