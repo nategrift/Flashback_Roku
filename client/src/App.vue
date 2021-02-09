@@ -1,27 +1,53 @@
 <template>
-  <media-player />
+  <div class="layout">
+    <the-header></the-header>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import mediaPlayer from './components/MediaPlayer.vue'
+import TheHeader from './layout/TheHeader';
 
 export default {
   name: 'App',
   components: {
-    mediaPlayer
+    TheHeader
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "./assets/scss/_variables.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  background: $gradient-background;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: $color-text;
+}
+html {
+  font-size: 62.5%;
 }
 body {
   margin: 0;
 }
+* {
+  box-sizing: border-box;
+}
+
+.layout {
+  display: grid;
+  grid-template-rows: 6rem auto;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.6rem;
+}
+
 </style>
