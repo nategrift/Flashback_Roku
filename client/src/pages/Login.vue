@@ -2,7 +2,11 @@
   <div class="login">
     <h1>Login</h1>
     <form @submit.prevent="submitLoginForm">
-      <base-input label="email" type="email" v-model.trim="email"></base-input>
+      <base-input
+        label="Username"
+        type="username"
+        v-model.trim="username"
+      ></base-input>
       <base-input
         label="Password"
         type="password"
@@ -25,13 +29,21 @@ export default {
   },
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
     };
   },
   methods: {
-    submitLoginForm() {
-      console.log(this.email, this.password);
+    async submitLoginForm() {
+      try {
+        await this.$store.dispatch("login", {
+          username: this.username,
+          password: this.password,
+        });
+        this.$router.replace('/profiles');
+      } catch (err) {
+        await this.$store.dispatch("setError", {error: err});
+      }
     },
   },
 };

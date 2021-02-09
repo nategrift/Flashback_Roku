@@ -2,13 +2,18 @@
   <div class="signup">
     <h1>Sign Up</h1>
     <form @submit.prevent="submitLoginForm">
-      <base-input label="name" type="name" v-model.trim="name"></base-input>
-      <base-input label="email" type="email" v-model.trim="email"></base-input>
+      <base-input
+        label="Username"
+        type="text"
+        v-model.trim="username"
+      ></base-input>
+      <base-input label="Email" type="email" v-model.trim="email"></base-input>
       <base-input
         label="Password"
         type="password"
         v-model.trim="password"
       ></base-input>
+      <base-input label="Pin" type="number" v-model.trim="pin"></base-input>
       <base-button type="submit">SignUp</base-button>
       <router-link to="/login">Login</router-link>
     </form>
@@ -26,14 +31,25 @@ export default {
   },
   data() {
     return {
-      name: "",
+      username: "",
       email: "",
       password: "",
+      pin: "",
     };
   },
   methods: {
-    submitLoginForm() {
-      console.log(this.name, this.email, this.password);
+    async submitLoginForm() {
+      try {
+        await this.$store.dispatch("signup", {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          pin: this.pin,
+        });
+        this.$router.replace('/profiles');
+      } catch (err) {
+        await this.$store.dispatch("setError", { error: err });
+      }
     },
   },
 };
@@ -45,6 +61,5 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  
 }
 </style>

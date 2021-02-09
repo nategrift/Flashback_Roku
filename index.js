@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 const port = process.env.PORT || 3000;
 
@@ -14,6 +15,9 @@ const apiRoutes = require('./routes/api')
 // Parse the body for incoming post requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(cors())
 
 // API Routes
 app.use('/api', require('./middleware/invalidBody'), apiRoutes)

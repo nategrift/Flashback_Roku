@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <p v-if="error">{{ error }}</p>
     <the-header></the-header>
     <router-view></router-view>
   </div>
@@ -12,6 +13,11 @@ export default {
   name: 'App',
   components: {
     TheHeader
+  },
+  computed: {
+    error() {
+      return this.$store.getters.error
+    }
   }
 }
 </script>
