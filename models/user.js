@@ -20,7 +20,7 @@ module.exports = class User {
       `INSERT INTO tbl_profiles (profiles_account_id, profiles_name, profiles_icon, profiles_level_id, profiles_pin) 
       VALUES (?, ?, ?, ?, ?),
       (?, ?, ?, ?, NULL);`,
-      [user[0].account_id, "Admin", "admin.jpg", 1, adminpin, user[0].account_id, "Kids", "kids.jpg", 2]
+      [user[0].account_id, "Admin", "admin.png", 1, adminpin, user[0].account_id, "Kids", "kids.png", 2]
     );
 
     if (user) {

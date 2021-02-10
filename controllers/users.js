@@ -9,7 +9,7 @@ exports.getProfiles = async (req, res, next) => {
     try {
       let profiles = await User.getProfiles(req.username);
       res.status(200).json({
-        success: true,
+        ok: true,
         profiles: profiles
       });
     } catch (err) {

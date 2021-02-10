@@ -24,7 +24,10 @@ app.use('/api', require('./middleware/invalidBody'), apiRoutes)
 
 // Application
 app.use('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
+  res.status(404).json({
+    ok: true,
+    message: 'No endpoint found'
+  })
 });
 
 app.use((error, req, res, next) => {

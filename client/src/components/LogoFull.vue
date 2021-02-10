@@ -1,6 +1,16 @@
 <template>
-  <img src="../assets/logo_full.png" alt="Logo Full" >
+  <img :src="`${publicPath}logo_full.png`" alt="Logo Full" >
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      publicPath: process.env.BASE_URL
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
   img {

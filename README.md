@@ -115,9 +115,8 @@ POST `/auth/login`
 GET `/profiles`
 
 #### Select Profile
-GET `/profiles`
+GET `/profiles/:profile_id `
   **Params:**
-  - profile_id 
   - pin *(if it is admin account)* 
 
 
