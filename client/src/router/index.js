@@ -3,6 +3,7 @@ import Home from '../pages/Home.vue'
 import SignUp from '../pages/SignUp.vue'
 import Login from '../pages/Login.vue'
 import Profiles from '../pages/Profiles.vue'
+import Media from '../pages/Media.vue'
 import NotFound from '../pages/404.vue'
 
 import store from '../store/index.js'
@@ -32,6 +33,12 @@ const routes = [
     meta: {requiresAuth: true}
   },
   {
+    path: '/media',
+    name: 'Media',
+    component: Media,
+    meta: {requiresAuth: true, requiresProfile: true}
+  },
+  {
     // Not found 404 page
     path: '/:notFound(.*)',
     name: '404',
@@ -45,7 +52,13 @@ const router = createRouter({
 })
 
 router.beforeEach(function(to, from, next) {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+  if (to.meta.requiresProfile && !store.getters.hasProfileSelected) {
+    if (store.getters.isAuthenticated) {
+      next('/profiles')
+    } else {
+      next('/login');
+    }
+  } else if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
     next('/login');
   } else if (to.meta.requiresNoAuth && store.getters.isAuthenticated) {
     next('/profiles');

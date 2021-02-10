@@ -45,14 +45,17 @@ module.exports.profileSuccess = function profileSuccess(profile, res) {
     config.secret,
     { expiresIn: '24h' }
   );
+  let profileObj = {
+    icon: profile.icon,
+    name: profile.name,
+    access: profile.level
+  }
   // Return token and Username
   res.json({
     ok: true,
     message: 'Success',
-    access: profile.level,
-    profileid: profile.profiles_id,
-    username: profile.username,
+    profile: profileObj,
+    userId: profile.id,
     token: token,
-    tokenExpiration: 86400
   });
 }
