@@ -1,5 +1,7 @@
 <template>
-  <img :src="`${publicPath}logo_full.png`" alt="Logo Full" />
+  <div>
+    <img :src="`${publicPath}logo_full.png`" alt="Logo Full" />
+  </div>
 </template>
 
 <script>
@@ -13,9 +15,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div {
+  width: 100%;
+}
 img {
   max-width: 709px;
   width: 60%;
   min-width: 320px;
+  margin: 0 auto;
 }
 </style>

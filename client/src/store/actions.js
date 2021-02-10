@@ -71,6 +71,13 @@ export default {
     });
   },
 
+  // Setting errors
+  clearError(context) {
+    context.commit('setError', {
+      error: null,
+    });
+  },
+
   // Logout and remove tokens
   logout(context) {
     localStorage.removeItem('token');

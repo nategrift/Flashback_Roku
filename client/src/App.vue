@@ -1,38 +1,47 @@
 <template>
   <div class="layout">
-    <p v-if="error">{{ error }}</p>
+    <base-notification v-if="error" @click="clearError">{{
+      error
+    }}</base-notification>
     <the-header></the-header>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import TheHeader from './layout/TheHeader';
+import TheHeader from "./layout/TheHeader";
+import BaseNotification from "./components/BaseNotification";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    TheHeader
+    TheHeader,
+    BaseNotification,
   },
   computed: {
     error() {
-      return this.$store.getters.error
+      return this.$store.getters.error;
     },
     isAutoLogout() {
       return this.$store.getters.isAutoLogout;
-    }
+    },
   },
   created() {
-    this.$store.dispatch('tryLogin');
+    this.$store.dispatch("tryLogin");
   },
   watch: {
     isAutoLogout(currentValue, oldValue) {
       if (currentValue && currentValue !== oldValue) {
-        this.$router.replace('/')
+        this.$router.replace("/");
       }
-    }
-  }
-}
+    },
+  },
+  methods: {
+    clearError() {
+      this.$store.dispatch("clearError");
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -61,12 +70,10 @@ body {
 .layout {
   display: grid;
   grid-template-rows: 6rem auto;
-  
 }
 a {
   color: inherit;
   text-decoration: none;
   font-size: 1.6rem;
 }
-
 </style>

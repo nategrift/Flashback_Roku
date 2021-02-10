@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Media</h1>
+    <logo-full></logo-full>
     <div v-if="types" class="types">
       <router-link
         v-for="type in types"
@@ -18,8 +18,12 @@
 
 <script>
 import fetchServer from "../util/requestsJwt";
+import LogoFull from "../components/LogoFull.vue";
 
 export default {
+  components: {
+    LogoFull,
+  },
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -48,13 +52,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/_variables.scss";
+
 .types {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  padding: 20% 20%;
+  padding: 5% 10%;
 
   button {
     background-color: transparent;

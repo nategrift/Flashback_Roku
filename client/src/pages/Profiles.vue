@@ -1,20 +1,24 @@
 <template>
   <div class="Profiles">
+    <logo-full></logo-full>
     <base-pinpad v-if="showPinpad" v-model="pin"></base-pinpad>
-    <button
-      v-for="profile in profiles"
-      :key="profile.id"
-      @click="selectProfiles(profile.id, profile.levels)"
-    >
-      <img :src="publicPath + profile.icon" :alt="profile.name" />
-      <p>{{ profile.name }}</p>
-    </button>
+    <div>
+      <button
+        v-for="profile in profiles"
+        :key="profile.id"
+        @click="selectProfiles(profile.id, profile.levels)"
+      >
+        <img :src="publicPath + profile.icon" :alt="profile.name" />
+        <p>{{ profile.name }}</p>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import fetchServer from "../util/requestsJwt";
 import BasePinpad from "../components/BasePinpad";
+import LogoFull from "../components/LogoFull.vue";
 
 export default {
   data() {
@@ -28,6 +32,7 @@ export default {
   },
   components: {
     BasePinpad,
+    LogoFull,
   },
   mounted() {
     this.getProfiles();
@@ -90,7 +95,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  padding: 20% 5%;
+  padding: 10% 5%;
 
   button {
     background-color: transparent;
@@ -101,6 +106,7 @@ export default {
     transition: background-color 0.2s;
     padding: 1.5rem 2.5rem;
     border-radius: 1rem;
+    margin: 2rem;
 
     &:hover {
       background-color: $color-dark-overlay;
