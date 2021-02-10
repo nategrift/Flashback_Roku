@@ -1,12 +1,27 @@
 <template>
   <header class="header">
-    <img src="../assets/logo.svg" alt="Logo" >
-    <ul>
+    <router-link to="/">
+      <img src="../assets/logo.svg" alt="Logo" />
+    </router-link>
+
+    <!-- Profile Nav -->
+    <ul v-if="hasProfileSelected">
       <li>
-        <router-link to='/'>Home</router-link>
-        <router-link to='login'>Login</router-link>
-        <router-link to='signup'>Signup</router-link>
-        <router-link to='profiles'>Profiles</router-link>
+        <router-link to="/media">Media</router-link>
+      </li>
+      <li>
+        <router-link to="/profiles">Profiles</router-link>
+      </li>
+      <li>
+        <a @click="logout">Logout</a>
+      </li>
+    </ul>
+    <!-- Logged in but no profile Nav -->
+    <ul v-else-if="isLoggedIn">
+      <li>
+        <router-link to="profiles">Profiles</router-link>
+      </li>
+      <li>
         <a @click="logout">Logout</a>
       </li>
     </ul>
@@ -17,11 +32,19 @@
 export default {
   methods: {
     logout() {
-      this.$store.dispatch('logout');
-      this.$router.replace('./')
+      this.$store.dispatch("logout");
+      this.$router.replace("./");
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+    hasProfileSelected() {
+      return this.$store.getters.hasProfileSelected;
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -38,13 +61,19 @@ export default {
 
 ul {
   list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
   li {
+    cursor: pointer;
     a {
       padding: 0 1rem;
       color: white;
       text-decoration: none;
       font-size: 1.6rem;
-      cursor: pointer;
+      display: inline-block;
     }
   }
 }

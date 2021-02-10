@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container">
+  <div class="container">
+    <div class="pinpad-container">
       <div class="display">
         <p>{{ modelValue.length >= 1 ? "*" : null }}</p>
         <p>{{ modelValue.length >= 2 ? "*" : null }}</p>
@@ -46,8 +46,6 @@ export default {
     clickButton(char) {
       if (char == "-") {
         this.$emit("update:modelValue", this.modelValue.slice(0, -1));
-      } else if (char == ">") {
-        // ..
       } else {
         if (this.modelValue.length <= 4) {
          this.$emit("update:modelValue", this.modelValue + char);
@@ -67,8 +65,10 @@ export default {
   background-color: $color-dark-overlay;
   z-index: 100;
   position: fixed;
+  top: 0;
+  left: 0;
 }
-.container {
+.pinpad-container {
   z-index: 200;
   background: $gradient-background-light;
   padding: 10rem 6rem;
@@ -81,6 +81,10 @@ export default {
   align-items: center;
   flex-direction: column;
   border-radius: 0.7rem;
+}
+
+.container {
+  position: fixed;
 }
 
 .display {

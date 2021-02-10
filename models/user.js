@@ -28,7 +28,7 @@ module.exports = class User {
     }
   }
 
-  static async getUserByUsername(username) {
+  static async isUsernameTaken(username) {
     let user;
     [
       user,
@@ -37,8 +37,10 @@ module.exports = class User {
         [username]
     );
     
-    if (user) {
-      return user[0];
+    if (user.length > 0) {
+      return true
+    } else if (user.length <= 0 ) {
+      return false
     } else {
       const error = new Error('User not found.');
       error.statusCode = 404;

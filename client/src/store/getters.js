@@ -13,5 +13,8 @@ export default {
   },
   isAutoLogout(state) {
     return state.didAutoLogout;
+  },
+  profile(state) {
+    return state.profile;
   }
 };

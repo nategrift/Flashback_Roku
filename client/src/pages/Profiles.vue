@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="Profiles">
     <base-pinpad v-if="showPinpad" v-model="pin"></base-pinpad>
     <button v-for="profile in profiles" :key="profile.id" @click="selectProfiles(profile.id, profile.levels)">
-      <img :src="publicPath + profile.icon" :alt="profile.name" type=/>
+      <img :src="publicPath + profile.icon" :alt="profile.name"/>
       <p>{{ profile.name }}</p>
     </button>
   </div>
@@ -53,15 +53,11 @@ export default {
       }
 
       try {
-        const res = await fetchServer('/api/user/profiles/' + profile_id , 'POST', this.$store.getters.token, pinObject);
-
-        const profile = {
-          token: res.token,
-          userId: res.userId,
-          profile: res.profile
-        }
-
-        await this.$store.commit("setUser", profile);
+        await this.$store.dispatch("selectProfile", {
+          profile_id: profile_id,
+          pin: pinObject,
+          token: this.$store.getters.token
+          });
         this.$router.push('/media')
         
       } catch (err) {
@@ -79,3 +75,13 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.Profiles {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 20% 0;
+}
+</style>

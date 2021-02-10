@@ -42,8 +42,8 @@ exports.postCreateAccount = async (req, res, next) => {
         return next(newError('Invalid Admin Pin', 409));
       }
       // Query Database for existing user
-      const existingUser = await User.getUserByUsername(username);
-      if (existingUser) {
+      const userTaken = await User.isUsernameTaken(username);
+      if (userTaken) {
         return next(newError('Username taken. Please try again', 209));
       }
 
