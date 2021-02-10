@@ -1,11 +1,27 @@
 <template>
-  <img src="../assets/logo_full.png" alt="Logo Full" >
+  <div>
+    <img :src="`${publicPath}logo_full.png`" alt="Logo Full" />
+  </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      publicPath: process.env.BASE_URL,
+    };
+  },
+};
+</script>
+
 <style lang="scss" scoped>
-  img {
-    max-width: 709px;
-    width: 60%;
-    min-width: 320px;
-  }
+div {
+  width: 100%;
+}
+img {
+  max-width: 709px;
+  width: 60%;
+  min-width: 320px;
+  margin: 0 auto;
+}
 </style>

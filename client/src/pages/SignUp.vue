@@ -1,5 +1,6 @@
 <template>
   <div class="signup">
+    <logo-full></logo-full>
     <h1>Sign Up</h1>
     <form @submit.prevent="submitLoginForm">
       <base-input
@@ -23,11 +24,13 @@
 <script>
 import BaseInput from "../components/BaseInput";
 import BaseButton from "../components/BaseButton";
+import LogoFull from "../components/LogoFull.vue";
 
 export default {
   components: {
     BaseInput,
     BaseButton,
+    LogoFull
   },
   data() {
     return {
@@ -46,7 +49,7 @@ export default {
           password: this.password,
           pin: this.pin,
         });
-        this.$router.replace('/profiles');
+        this.$router.replace("/profiles");
       } catch (err) {
         await this.$store.dispatch("setError", { error: err });
       }

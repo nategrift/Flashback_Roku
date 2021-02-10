@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import LogoFull from "../components/LogoFull.vue";
 import BaseButton from "../components/BaseButton.vue";
+import LogoFull from "../components/LogoFull.vue";
 
 export default {
   components: {
-    LogoFull,
-    BaseButton
+    BaseButton,
+    LogoFull
   },
 };
 </script>

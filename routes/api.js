@@ -12,8 +12,8 @@ const tokensMiddleware = require('../middleware/token.js');
 router.use('/auth', authRoutes);
 
 // API Routes
-router.use('/media',tokensMiddleware.checkToken, mediaRoutes);
-router.use('/user',tokensMiddleware.checkToken, userRoutes);
+router.use('/media', tokensMiddleware.checkToken, mediaRoutes);
+router.use('/user', tokensMiddleware.checkToken, userRoutes);
 
 
 module.exports = router;

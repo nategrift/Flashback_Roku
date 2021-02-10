@@ -8,7 +8,13 @@ export default {
   isAuthenticated(state) {
     return !!state.token;
   },
+  hasProfileSelected(state) {
+    return !!state.profile;
+  },
   isAutoLogout(state) {
     return state.didAutoLogout;
+  },
+  profile(state) {
+    return state.profile;
   }
 };

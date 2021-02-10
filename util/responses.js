@@ -6,14 +6,14 @@ let config = require('../config');
 module.exports.errorResponse = function errorResponse(status, err, res) {
 
   // if error connecting to database 
-    if (err.includes('ECONNREFUSED')) {
-      err = "Error: Unable to connect to Database, Sorry for the inconvenience. Please try again later"
-    }
+  if (err.includes('ECONNREFUSED')) {
+    err = "Error: Unable to connect to Database, Sorry for the inconvenience. Please try again later"
+  }
 
-    return res.status(status).json({
-        ok: false,
-        message: err,
-    });
+  return res.status(status).json({
+    ok: false,
+    message: err,
+  });
 }
 
 module.exports.successResponse = function successResponse(username, id, res) {
@@ -41,18 +41,21 @@ module.exports.profileSuccess = function profileSuccess(profile, res) {
   // 1 = adult (admin)
 
   let token = jwt.sign(
-    { username: profile.username, id: profile.id, access: profile.level},
+    { username: profile.username, id: profile.id, access: profile.level },
     config.secret,
     { expiresIn: '24h' }
   );
+  let profileObj = {
+    icon: profile.icon,
+    name: profile.name,
+    access: profile.level
+  }
   // Return token and Username
   res.json({
     ok: true,
     message: 'Success',
-    access: profile.level,
-    profileid: profile.profiles_id,
-    username: profile.username,
+    profile: profileObj,
+    userId: profile.id,
     token: token,
-    tokenExpiration: 86400
   });
 }
