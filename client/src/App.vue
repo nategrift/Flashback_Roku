@@ -46,7 +46,6 @@ export default {
   background: $gradient-background;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
   color: $color-text;
 }
 html {
@@ -62,6 +61,7 @@ body {
 .layout {
   display: grid;
   grid-template-rows: 6rem auto;
+  
 }
 a {
   color: inherit;

@@ -12,10 +12,10 @@ module.exports = class User {
     let [
       user
     ] = await db.execute(
-        `SELECT tbl_accounts.account_id, tbl_accounts.account_username FROM tbl_accounts WHERE tbl_accounts.account_username = ?`,
-        [username]
+      `SELECT tbl_accounts.account_id, tbl_accounts.account_username FROM tbl_accounts WHERE tbl_accounts.account_username = ?`,
+      [username]
     );
-    
+
     await db.execute(
       `INSERT INTO tbl_profiles (profiles_account_id, profiles_name, profiles_icon, profiles_level_id, profiles_pin) 
       VALUES (?, ?, ?, ?, ?),
@@ -33,13 +33,13 @@ module.exports = class User {
     [
       user,
     ] = await db.execute(
-        `SELECT tbl_accounts.account_username, tbl_accounts.account_id FROM tbl_accounts WHERE tbl_accounts.account_username = ?`,
-        [username]
+      `SELECT tbl_accounts.account_username, tbl_accounts.account_id FROM tbl_accounts WHERE tbl_accounts.account_username = ?`,
+      [username]
     );
-    
+
     if (user.length > 0) {
       return true
-    } else if (user.length <= 0 ) {
+    } else if (user.length <= 0) {
       return false
     } else {
       const error = new Error('User not found.');
@@ -52,15 +52,15 @@ module.exports = class User {
     const [
       user,
     ] = await db.execute(
-        `SELECT account_username, account_id FROM tbl_accounts WHERE account_username = ? AND account_password = ?`,
-        [username, password]
+      `SELECT account_username, account_id FROM tbl_accounts WHERE account_username = ? AND account_password = ?`,
+      [username, password]
     );
 
     // If no other users exist
     if (user.length > 0) {
       return user[0]
 
-    // If user exists
+      // If user exists
     } else {
       const error = new Error('Invalid Username or Password. Please try again');
       error.statusCode = 401;
@@ -73,18 +73,18 @@ module.exports = class User {
     const [
       user,
     ] = await db.execute(
-        `SELECT p.profiles_id as id, p.profiles_name as name, p.profiles_icon as icon, l.levels_protected as levels FROM tbl_profiles as p 
+      `SELECT p.profiles_id as id, p.profiles_name as name, p.profiles_icon as icon, l.levels_protected as levels FROM tbl_profiles as p 
         Left JOIN tbl_accounts AS a ON p.profiles_account_id = a.account_id 
         Left JOIN tbl_levels AS l ON p.profiles_level_id = l.levels_id
         WHERE a.account_username = ?;`,
-        [username]
+      [username]
     );
 
     // If no other users exist
     if (user.length > 0) {
       return user;
 
-    // If user exists
+      // If user exists
     } else {
       const error = new Error('Invalid Username or Password. Please try again');
       error.statusCode = 401;
@@ -95,7 +95,7 @@ module.exports = class User {
 
   // Profiles for Users
   static async selectProfile(username, profileId, pin) {
-    
+
     // Preventing pin from being null
     if (!pin) {
       pin = 0;
@@ -104,15 +104,15 @@ module.exports = class User {
     const [
       profile,
     ] = await db.execute(
-        `SELECT a.account_id as id, p.profiles_icon as icon, p.profiles_name as name, a.account_username as username, l.levels_protected as level FROM tbl_profiles as p Left JOIN tbl_accounts AS a ON p.profiles_account_id = a.account_id LEFT JOIN tbl_levels as l ON l.levels_id = p.profiles_level_id WHERE a.account_username = ? and p.profiles_id = ? AND (l.levels_protected < 1 OR p.profiles_pin = ?);`,
-        [username, profileId, pin]
+      `SELECT a.account_id as id, p.profiles_icon as icon, p.profiles_name as name, a.account_username as username, l.levels_protected as level FROM tbl_profiles as p Left JOIN tbl_accounts AS a ON p.profiles_account_id = a.account_id LEFT JOIN tbl_levels as l ON l.levels_id = p.profiles_level_id WHERE a.account_username = ? and p.profiles_id = ? AND (l.levels_protected < 1 OR p.profiles_pin = ?);`,
+      [username, profileId, pin]
     );
 
     // If no other users exist
     if (profile.length > 0) {
       return profile[0];
 
-    // If user exists
+      // If user exists
     } else {
       const error = new Error('Profile or Pin is incorrect. Please try again');
       error.statusCode = 401;

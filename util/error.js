@@ -9,6 +9,6 @@ module.exports = function newError(err, status) {
   } else {
     error.statusCode = 500;
   }
-  
+
   return error;
 }

@@ -48,8 +48,8 @@ export default {
         this.$emit("update:modelValue", this.modelValue.slice(0, -1));
       } else {
         if (this.modelValue.length <= 4) {
-         this.$emit("update:modelValue", this.modelValue + char);
-        } 
+          this.$emit("update:modelValue", this.modelValue + char);
+        }
       }
     },
   },

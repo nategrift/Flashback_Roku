@@ -13,7 +13,7 @@ import BaseButton from "../components/BaseButton.vue";
 export default {
   components: {
     LogoFull,
-    BaseButton
+    BaseButton,
   },
 };
 </script>

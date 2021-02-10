@@ -20,6 +20,10 @@ export default {
       userId: res.userId,
       profile: res.profile
     }
+    localStorage.setItem('token', profile.token);
+    localStorage.setItem('userId', profile.userId);
+    localStorage.setItem('profile', profile.profile);
+
     await context.commit('setUser', profile);
   },
   async auth(context, payload) {
@@ -103,6 +107,7 @@ export default {
     }, expiresIn)
 
     const profile = localStorage.getItem('profile');
+
     if (token && userId) {
       context.commit('setUser', {
         token: token,

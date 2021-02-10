@@ -3,9 +3,9 @@ module.exports = (err, req, res, next) => {
   // coming from any middleware, not just body-parser:
 
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-      const error = new Error("SyntaxError!  Please send requests with proper syntax and required params.");
-      error.statusCode = 400;
-      return next(error);
+    const error = new Error("SyntaxError!  Please send requests with proper syntax and required params.");
+    error.statusCode = 400;
+    return next(error);
   }
 
   next();

@@ -1,8 +1,8 @@
 export default {
   setUser(state, payload) {
     state.token = payload.token,
-    state.userId = payload.userId,
-    state.profile = payload.profile || null
+      state.userId = payload.userId,
+      state.profile = payload.profile || null
   },
   setError(state, payload) {
     state.error = payload.error

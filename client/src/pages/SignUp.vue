@@ -46,7 +46,7 @@ export default {
           password: this.password,
           pin: this.pin,
         });
-        this.$router.replace('/profiles');
+        this.$router.replace("/profiles");
       } catch (err) {
         await this.$store.dispatch("setError", { error: err });
       }

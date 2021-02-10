@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <router-link to="/">
-      <img src="../assets/logo.svg" alt="Logo" />
+      <img :src="publicPath + 'logo.svg'" alt="Logo" />
     </router-link>
 
     <!-- Profile Nav -->
@@ -36,13 +36,18 @@ export default {
       this.$router.replace("./");
     },
   },
+  data() {
+    return {
+      publicPath: process.env.BASE_URL,
+    }
+  },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
     },
     hasProfileSelected() {
       return this.$store.getters.hasProfileSelected;
-    }
+    },
   },
 };
 </script>

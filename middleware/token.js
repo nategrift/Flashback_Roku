@@ -2,24 +2,24 @@ let jwt = require('jsonwebtoken');
 const config = require('../config.js');
 
 const checkToken = (req, res, next) => {
-  let authToken = req.headers['x-access-token'] || req.headers['authorization']; 
+  let authToken = req.headers['x-access-token'] || req.headers['authorization'];
 
   // Check if token
   if (!authToken) {
     return res.json({
-        success: false,
-        message: 'Auth token is not supplied'
-      });
+      success: false,
+      message: 'Auth token is not supplied'
+    });
   }
 
   // Remove Bearer Part of token
   if (authToken.startsWith('Bearer ') && authToken.length > 20) {
     authToken = authToken.slice(7, authToken.length);
   } else {
-      return res.json({
-        success: false,
-        message: 'Token is not valid'
-      });
+    return res.json({
+      success: false,
+      message: 'Token is not valid'
+    });
   }
 
   if (authToken) {

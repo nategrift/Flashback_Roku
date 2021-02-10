@@ -68,30 +68,30 @@ module.exports = class Media {
 
     let rows;
     if (params) {
-      [ rows ] = await db.execute(
+      [rows] = await db.execute(
         query,
         params
       );
     } else {
-      [ rows ] = await db.execute(
+      [rows] = await db.execute(
         query
       );
     }
-    
+
     return rows;
 
   }
 
   static async getMediaTypes() {
-    const [ rows ] = await db.execute(
-      `SELECT * FROM tbl_media_types`
+    const [rows] = await db.execute(
+      `SELECT t.types_id as id, t.types_value as value, t.types_title as title, t.types_icon as icon FROM tbl_media_types as t`
     );
     return rows;
   }
 
   static async getMediaById(movieId) {
-    const [ rows ] = await db.execute('SELECT m.*, t.types_title as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
-    [ movieId ]);
+    const [rows] = await db.execute('SELECT m.*, t.types_value as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
+      [movieId]);
 
     // If movie exists return else throw error
     if (!rows || rows.length < 1) {
@@ -104,26 +104,26 @@ module.exports = class Media {
   }
 
   static async likeMedia(movieId, userId) {
-    const [ media ] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
-    [ movieId ]);
+    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
+      [movieId]);
 
-     if (media.length <= 0) {
+    if (media.length <= 0) {
       const error = new Error('Error liking media. Media doesn\'t exist');
       error.statusCode = 404;
       throw error;
-     }
+    }
 
-    const [ alreadyExists ] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-    [ movieId, userId ]);
+    const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
+      [movieId, userId]);
 
-     if (alreadyExists.length > 0) {
+    if (alreadyExists.length > 0) {
       const error = new Error('Error liking media. Already has been liked.');
       error.statusCode = 404;
       throw error;
-     }
+    }
 
-    const [ rows ] = await db.execute('INSERT INTO `tbl_media_likes` (`likes_media_id`, `likes_user_id`) VALUES ( ?, ? );',
-    [ movieId, userId ]);
+    const [rows] = await db.execute('INSERT INTO `tbl_media_likes` (`likes_media_id`, `likes_user_id`) VALUES ( ?, ? );',
+      [movieId, userId]);
 
     // If movie exists return else throw error
     if (rows.affectedRows !== 1) {
@@ -139,26 +139,26 @@ module.exports = class Media {
     }
   }
   static async unlikeMedia(movieId, userId) {
-    const [ media ] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
-    [ movieId ]);
+    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
+      [movieId]);
 
-     if (media.length <= 0) {
+    if (media.length <= 0) {
       const error = new Error('Error unliking media. Media doesn\'t exist');
       error.statusCode = 404;
       throw error;
-     }
+    }
 
-    const [ alreadyExists ] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-    [ movieId, userId ]);
+    const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
+      [movieId, userId]);
 
-     if (alreadyExists.length <= 0) {
+    if (alreadyExists.length <= 0) {
       const error = new Error('Error unliking media. Please like it first.');
       error.statusCode = 404;
       throw error;
-     }
+    }
 
-    const [ rows ] = await db.execute('DELETE FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-    [ movieId, userId ]);
+    const [rows] = await db.execute('DELETE FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
+      [movieId, userId]);
 
     // If movie exists return else throw error
     if (rows.affectedRows !== 1) {

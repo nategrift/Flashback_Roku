@@ -40,9 +40,9 @@ export default {
           username: this.username,
           password: this.password,
         });
-        this.$router.replace('/profiles');
+        this.$router.replace("/profiles");
       } catch (err) {
-        await this.$store.dispatch("setError", {error: err});
+        await this.$store.dispatch("setError", { error: err });
       }
     },
   },
