@@ -40,9 +40,12 @@ exports.getMediaById = async (req, res, next) => {
 
   try {
     let media = await Media.getMediaById(mediaId);
+    let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
+
     res.status(200).json({
       ok: true,
-      media: media[0]
+      media: media[0],
+      hasLiked: hasLikedMedia.hasLiked
     });
 
   } catch (err) {
@@ -77,7 +80,7 @@ exports.deleteLikeMedia = async (req, res, next) => {
 
   try {
     let media = await Media.unlikeMedia(mediaId, req.id);
-    res.status(201).json(media);
+    res.status(200).json(media);
 
   } catch (err) {
     return next(newError(err))

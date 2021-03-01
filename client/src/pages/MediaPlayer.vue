@@ -1,4 +1,4 @@
-// src="../assets/media/content/movies/hercules.mp4"
+
 <template>
 <!-- Full Video Player -->
   <div

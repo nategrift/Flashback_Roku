@@ -10,11 +10,16 @@
         <p>{{ media.media_title }}</p>
         <p>{{ media.media_release }}</p>
         <p>{{ media.media_runtime }}</p>
+        <!-- Links to watch or view details of specific item -->
         <router-link
           :to="{ name: 'watch', params: { mediaId: media.media_id } }"
           >Play</router-link
         >
-        <button>More Info</button>
+        <router-link
+          :to="{ name: 'MediaDetails', params: { mediaId: media.media_id } }"
+          >Details</router-link
+        >
+        
       </li>
     </ul>
   </div>
