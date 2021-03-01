@@ -1,5 +1,6 @@
 // src="../assets/media/content/movies/hercules.mp4"
 <template>
+<!-- Full Video Player -->
   <div
     class="video-player"
     ref="fullPlayer"
@@ -12,40 +13,57 @@
       type="video/mp4"
       ref="videoPlayer"
       @timeupdate="setSlider"
+      v-playback-rate="speed"
     ></video>
-    <div class="controls" v-if="controlsShown">
+    <!-- Controls -->
+    <div class="controls" v-show="controlsShown">
+      <!-- Back Button  -->
+      <div class="controls-top__left">
+        <button @click="backPage">
+          <img :src="`${publicPath}arrow-left-solid.svg`" alt="Back" />
+        </button>
+      </div>
+
+      <!-- Main Time Stamp Slider -->
       <input
         type="range"
         min="0"
         max="1000"
         value="0"
-        class="slider"
+        class="slider main-slider"
         ref="timeSlider"
-        @input="() => changeTime()"
+        @input="changeTime(null)"
       />
+      <!-- Bottom controls for smaller button -->
       <div class="controls-bottom">
+        <!--  Left side controls for button -->
         <div class="controls-bottom__left">
+          <!-- Play button -->
           <button
             @click="togglePlaying"
-            ref="button"
             title="Toggle Playing Video (Space)"
           >
-            Play
+            <img class="img-button" ref="playPause" :src="`${publicPath}play-solid.svg`" alt="Play/Pause">
           </button>
+           <!-- Back 10 seconds -->
           <button
-            @click="() => changeTime(-10)"
+            @click="changeTime(-10)"
             title="Go backwards 10 seconds (Left Arrow)"
           >
             -10s
           </button>
+          <!-- Farward 10 seconds -->
           <button
-            @click="() => changeTime(10)"
+            @click="changeTime(10)"
             title="Fast farward 10 seconds (Right Arrow)"
           >
             +10s
           </button>
-          <button @click="toggleVolume">Volume</button>
-          <div class="volumeControl">
+          <!-- Volume Button and Input -->
+          <button @click="toggleVolume">
+            <img class="img-button" :src="`${publicPath}volume-solid.svg`" alt="Volume">
+          </button>
+          <div class="volumeControl" v-show="volumeShown">
             <input
               type="range"
               min="0"
@@ -57,12 +75,22 @@
               @change="setVolume"
             />
           </div>
-          <!-- <p>Hercules</p> -->
+          <p>{{ mediaName }}</p>
         </div>
+        <!-- Right side controls on bottom -->
         <div class="controls-bottom__right">
-          <button>?</button>
-          <button>Speed</button>
-          <button @click="fullScreen">FullScreen</button>
+          <!-- Speed Settings and Button -->
+          <div v-show="speedShown" class="speed-options">
+            <!-- Loop through each available speed in the data section -->
+            <button v-for="speed in availableSpeeds" :key="speed" @click="setSpeed(speed)" :class="{active: isCurrentSpeed(speed)}">{{speed}}x</button>
+          </div>
+          <button @click="toggleSpeed">
+            <img class="img-button" :src="`${publicPath}speed-solid.svg`" alt="Speed">
+          </button>
+          <!-- Fullscreen Button -->
+          <button @click="fullScreen">
+            <img class="img-button" :src="`${publicPath}fullscreen-solid.svg`" alt="Fullscreen">
+          </button>
         </div>
       </div>
     </div>
@@ -76,10 +104,16 @@ export default {
   name: "mediaPlayer",
   data: function () {
     return {
-      controlsShown: true,
+      controlsShown: true, 
+      volumeShown: false,
+      speedShown: false,
+      speed: 1,
+      availableSpeeds: [0.5, 1, 1.5, 2],
       url: "",
+      mediaName: "",
       publicPath: process.env.BASE_URL,
       timer: null,
+      
     };
   },
   props: {
@@ -91,7 +125,15 @@ export default {
   mounted() {
     this.fetchMovie();
   },
+  directives: {
+    playbackRate(el, binding) {
+      el.playbackRate = binding.value;
+    }
+  },
   methods: {
+    backPage() {
+      this.$router.back();
+    },
     setTimer() {
       this.controlsShown = true;
       clearTimeout(this.timer);
@@ -100,6 +142,7 @@ export default {
       }, 3000);
     },
     async fetchMovie() {
+      //  Get movie from database using the id in url
       try {
         const response = await fetchServer(
           `/api/media/${this.mediaId}`,
@@ -108,25 +151,26 @@ export default {
         );
 
         this.url = `${this.publicPath}media/content/${response.media.type}/${response.media.media_src}`;
+        this.mediaName = response.media.media_title;
         this.$refs.videoPlayer.load();
       } catch (err) {
         await this.$store.dispatch("setError", { error: err });
         this.$router.push("/media");
       }
     },
-    toggleControlsShown() {
-      this.controlsShown = false;
-    },
     togglePlaying() {
       const video = this.$refs.videoPlayer;
-      const button = this.$refs.button;
+      const img = this.$refs.playPause;
+      const vol = this.$refs.volumeSlider;
+      
       if (video.paused || video.ended) {
         video.volume = 0.5;
         video.play();
-        button.textContent = "Pause";
+        video.volume = vol.value / 100;
+        img.src =`${this.publicPath}pause-solid.svg`;
       } else {
         video.pause();
-        button.textContent = "Play";
+        img.src =`${this.publicPath}play-solid.svg`;
       }
     },
     changeTime(time) {
@@ -165,17 +209,24 @@ export default {
       }
     },
     toggleVolume() {
-      const vol = this.$refs.volumeSlider;
-      if (vol.parentElement.style.visibility == "hidden") {
-        vol.parentElement.style.visibility = "visible";
-      } else {
-        vol.parentElement.style.visibility = "hidden";
-      }
+      this.volumeShown = !this.volumeShown;
     },
     setVolume() {
       const video = this.$refs.videoPlayer;
       const vol = this.$refs.volumeSlider;
       video.volume = vol.value / 100;
+    },
+    toggleSpeed() {
+      this.speedShown = !this.speedShown;
+    },
+    isCurrentSpeed(speed) {
+      return this.speed == speed;
+    },
+    setSpeed(speed) {
+      const video = this.$refs.videoPlayer;
+      if (video) {
+        this.speed = speed;
+      }
     },
     keypress(e) {
       switch (e.keyCode) {
@@ -205,7 +256,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+$player-accent: #43e5f7;
+
 .video-player {
   position: fixed;
   width: 100%;
@@ -239,6 +292,10 @@ export default {
   background-color: transparent;
   color: #fff;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .controls p {
@@ -258,31 +315,55 @@ export default {
 }
 
 .controls-bottom__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 1rem;
   margin-left: auto;
+}
+.controls-bottom__left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 1rem;
+}
+
+.controls-top__left {
+  position: fixed;
+  top: 4rem;
+  left: 3rem;
+  img {
+    width: 5rem;
+    height: 5rem;
+    padding: 0.5rem;
+  }
 }
 
 .slider {
   -webkit-appearance: none;
   appearance: none;
   background: grey;
-  width: 95%;
   border-radius: 5px;
-  position: fixed;
-  left: 2.5%;
-  bottom: 80px;
   border: 0;
   height: 5px;
 }
 
+.main-slider {
+  width: 95%;
+  position: fixed;
+  left: 2.5%;
+  bottom: 10.5rem;
+}
+
 input[type="range"]::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  color: #13bba4;
+  color: $player-accent;
   margin-top: -1px;
 }
 
 /** FF*/
 input[type="range"]::-moz-range-progress {
-  background-color: #43e5f7;
+  background-color: $player-accent;
   height: 100%;
 }
 input[type="range"]::-moz-range-track {
@@ -291,7 +372,7 @@ input[type="range"]::-moz-range-track {
 }
 /* IE*/
 input[type="range"]::-ms-fill-lower {
-  background-color: #43e5f7;
+  background-color: $player-accent;
 }
 input[type="range"]::-ms-fill-upper {
   background-color: grey;
@@ -300,15 +381,31 @@ input[type="range"]::-ms-fill-upper {
 .volumeControl {
   display: block;
   position: relative;
-  visibility: hidden;
 }
 
 .volumeControl > input {
-  display: block;
-  position: absolute;
+  display: inline-block;
+  position: relative;
   width: 100px;
-  top: -150px;
-  left: 200px;
-  transform: rotateZ(-90deg);
 }
+.img-button {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.speed-options {
+  display: flex;
+  justify-content: space-around;
+  transition: color 0.3s;
+  cursor: pointer;
+
+  button:hover {
+    color: rgb(181, 181, 181);
+  }
+}
+
+.active {
+  color: $player-accent !important;
+}
+
 </style>
