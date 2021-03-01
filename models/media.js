@@ -103,6 +103,31 @@ module.exports = class Media {
     }
   }
 
+  static async userHasLikedMedia(movieId, userId) {
+    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
+      [movieId]);
+
+    if (media.length <= 0) {
+      const error = new Error('Error liking media. Media doesn\'t exist');
+      error.statusCode = 404;
+      throw error;
+    }
+    const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
+      [movieId, userId]);
+
+    if (alreadyExists.length > 0) {
+      return {
+        success: true,
+        hasLiked: true
+      }
+    } else {
+      return {
+        success: true,
+        hasLiked: false
+      }
+    }
+  }
+
   static async likeMedia(movieId, userId) {
     const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
       [movieId]);
