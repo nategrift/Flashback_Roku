@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', mediaController.getMedia, mediaController.mediaSendSuccess);
 router.get('/types', mediaController.getTypes);
 router.get('/:movieId', mediaController.getMediaById, mediaController.mediaSendSuccess);
+router.get('/:movieId/like-media', mediaController.getLikeMedia);// Has user liked Media
 router.post('/:movieId/like-media', mediaController.postLikeMedia);
 router.delete('/:movieId/like-media', mediaController.deleteLikeMedia);
 

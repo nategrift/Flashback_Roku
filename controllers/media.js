@@ -50,6 +50,17 @@ exports.getMediaById = async (req, res, next) => {
   }
 };
 
+exports.getLikeMedia = async (req, res, next) => {
+  const mediaId = req.params.movieId;
+  try {
+    let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
+    res.status(201).json(hasLikedMedia);
+
+  } catch (err) {
+    return next(newError(err))
+  }
+};
+
 exports.postLikeMedia = async (req, res, next) => {
   const mediaId = req.params.movieId;
   try {
@@ -73,7 +84,7 @@ exports.deleteLikeMedia = async (req, res, next) => {
   }
 };
 
-exports.mediaSendSuccess = (req, res, next) => {
+exports.mediaSendSuccess = (req, res) => {
   const result = req.media;
   const status = req.status;
 
