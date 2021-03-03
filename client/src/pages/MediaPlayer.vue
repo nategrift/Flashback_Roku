@@ -121,7 +121,7 @@ export default {
       mediaIsAudio: false,
       publicPath: process.env.BASE_URL,
       timer: null,
-      audioPlaying: false
+      mediaPlaying: false
       
     };
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="media">
+  <div class="media" :class="{kidsTheme: isKid}">
     <!-- Title logo specific for current content section -->
     <img :src="publicPath + 'titles/' + types + '.png'" :alt="types" />
     <!-- Filter Button -->
@@ -48,6 +48,7 @@ export default {
     return {
       publicPath: process.env.BASE_URL,
       allMedia: null,
+      isKid: this.$store.getters.isKid
     };
   },
   mounted() {
@@ -118,4 +119,7 @@ export default {
     }
   }
 }
+  .kidsTheme {
+    // Kids theme styles go here
+  }
 </style>
