@@ -4,7 +4,7 @@ export default async (url, method, token, payload) => {
 
 
 
-    const response = await fetch(config.domain + url, {
+    const response = await fetch(config.apiDomain + url, {
       method: method,
       headers: {
         'Content-Type': 'application/json',
