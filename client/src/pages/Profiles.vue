@@ -1,7 +1,7 @@
 <template>
   <div class="Profiles">
     <logo-full></logo-full>
-    <base-pinpad v-if="showPinpad" v-model="pin"></base-pinpad>
+    <base-pinpad v-show="showPinpad" v-model="pin" v-on:closePinpad="closePinpad"></base-pinpad>
     <div>
       <button
         v-for="profile in profiles"
@@ -38,6 +38,10 @@ export default {
     this.getProfiles();
   },
   methods: {
+    closePinpad() {
+      this.showPinpad = false;
+      this.pin = '';
+    },
     async getProfiles() {
       try {
         const returnedProfiles = await fetchServer(
@@ -51,6 +55,7 @@ export default {
       }
     },
     async selectProfiles(profile_id, profile_level) {
+      //  If its admin account, then show pinpad
       if (profile_level > 0 && !this.pin && this.pin.length !== 4) {
         this.showPinpad = true;
         this.accountAttempt = profile_id;
@@ -62,7 +67,6 @@ export default {
           pin: this.pin,
         };
         this.pin = "";
-        this.accountAttempt = null;
       }
 
       try {
@@ -72,6 +76,7 @@ export default {
           token: this.$store.getters.token,
         });
         this.$router.push("/media");
+        this.showPinpad = false;
       } catch (err) {
         await this.$store.dispatch("setError", { error: err });
       }
@@ -81,7 +86,6 @@ export default {
     pin(pin) {
       if (pin.length >= 4) {
         this.selectProfiles(this.accountAttempt, 1);
-        this.showPinpad = false;
       }
     },
   },

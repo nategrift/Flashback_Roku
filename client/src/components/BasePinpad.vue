@@ -26,7 +26,7 @@
         <div class="column">
           <button @click="clickButton('-')">-</button>
           <button @click="clickButton('0')">0</button>
-          <button @click="clickButton('>')">></button>
+          <button @click="clickButton('X')">X</button>
         </div>
       </div>
     </div>
@@ -46,7 +46,9 @@ export default {
     clickButton(char) {
       if (char == "-") {
         this.$emit("update:modelValue", this.modelValue.slice(0, -1));
-      } else {
+      } else if (char == "X") {
+        this.$emit("closePinpad", true);
+      }else {
         if (this.modelValue.length <= 4) {
           this.$emit("update:modelValue", this.modelValue + char);
         }

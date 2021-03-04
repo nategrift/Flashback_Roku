@@ -22,5 +22,6 @@
   p {
     margin: 0;
   }
+  z-index: 1000;
 }
 </style>
