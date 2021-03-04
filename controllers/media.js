@@ -44,7 +44,7 @@ exports.getMediaById = async (req, res, next) => {
 
     res.status(200).json({
       ok: true,
-      media: media[0],
+      media: media,
       hasLiked: hasLikedMedia.hasLiked
     });
 
