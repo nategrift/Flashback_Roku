@@ -3,81 +3,45 @@ const db = require('../util/database');
 module.exports = class Media {
 
   static async getMedia(type, rangemin, rangemax, level) {
-    let query;
-    let adminQuery;
-    let params;
-    if (type && rangemin && rangemax) {
-      // Has 3 params (type, rangemin, rangemax)
+    
+    // Starting Query
+    let query = `SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
+    LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
+    LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id`;
 
-      query = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      where t.types_value = ?
-      AND m.media_release > ? 
-      AND m.media_release < ?
-      AND m.media_mature = 0
-      GROUP BY m.media_id;`
+    let params = [];
 
-      adminQuery = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      where t.types_value = ?
-      AND m.media_release > ? 
-      AND m.media_release < ?
-      GROUP BY m.media_id;`
-
-      params = [type, rangemin, rangemax];
-    } else if (type) {
-      // Has 1 params (type)
-      query = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      where t.types_value = ?
-      and m.media_mature = 0
-      GROUP BY m.media_id;`
-      adminQuery = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      where t.types_value = ?
-      GROUP BY m.media_id;`
-
-      params = [type];
-    } else {
-      query = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      WHERE m.media_mature = 0
-      GROUP BY m.media_id;`
-
-      adminQuery = `
-      SELECT DISTINCT m.*, t.types_title as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
-      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
-      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
-      GROUP BY m.media_id;`
+    //  Add type query
+    if (type) {
+      query = query.concat(' WHERE t.types_value = ?');
+      params.push(type);
     }
 
-    // If no access then only show kid friendly content
-    if (level === 1) {
-      query = adminQuery;
+    // Add min and max range 
+    if (rangemin && rangemax) {
+      query = query.concat(' AND m.media_release > ? AND m.media_release < ?');
+      params.push(rangemin, rangemax);
     }
 
-    let rows;
-    if (params) {
-      [rows] = await db.execute(
-        query,
-        params
-      );
-    } else {
-      [rows] = await db.execute(
-        query
-      );
+    // Add mature restriction if user doesn't have access
+    if (level < 1) {
+      query = query.concat(' AND m.media_mature = 0');
     }
 
+    // Finish off query
+    query = query.concat(' GROUP BY m.media_id;');
+
+    // If params is empty make it null to prevent empty array entering SQL query
+    if (params.length < 0) {
+      params = null;
+    }
+
+    const [rows] = await db.execute(
+      query,
+      params
+    );
+    
+    // Retyrb 
     return rows;
 
   }
@@ -89,39 +53,44 @@ module.exports = class Media {
     return rows;
   }
 
-  static async getMediaById(movieId) {
-    const [rows] = await db.execute(`
+  static async getMediaById(movieId, level) {
+
+    let query = `
     SELECT DISTINCT m.*, t.types_value as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
       LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
       LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
       WHERE m.media_id = ?
-      GROUP BY m.media_id;
-    `, [movieId])
+      `;
 
-    // const [rows] = await db.execute('SELECT m.*, t.types_value as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
-    //   [movieId]);
+    // If mature add WHERE statement to get only if its mature
+    if (level < 1) {
+      query = query.concat(' AND m.media_mature = 0')
+    }
+
+    // Add last part of query
+    query = query.concat(' GROUP BY m.media_id;')
+
+    const [rows] = await db.execute(query, [movieId])
 
     // If movie exists return else throw error
     if (!rows || rows.length < 1) {
-      const error = new Error('Movie does not exist');
+      const error = new Error('Movie does not exist or you do not have access');
       error.statusCode = 404;
       throw error;
     } else {
-      return rows;
+      //  Return first item
+      return rows[0];
     }
   }
 
-  static async userHasLikedMedia(movieId, userId) {
-    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
-      [movieId]);
+  static async userHasLikedMedia(mediaId, userId, level) {
 
-    if (media.length <= 0) {
-      const error = new Error('Error liking media. Media doesn\'t exist');
-      error.statusCode = 404;
-      throw error;
-    }
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+    await this.getMediaById(mediaId, level);
+
+    // Check if user has already liked
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-      [movieId, userId]);
+      [mediaId, userId]);
 
     if (alreadyExists.length > 0) {
       return {
@@ -136,18 +105,14 @@ module.exports = class Media {
     }
   }
 
-  static async likeMedia(movieId, userId) {
-    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
-      [movieId]);
+  static async likeMedia(mediaId, userId, level) {
+    
 
-    if (media.length <= 0) {
-      const error = new Error('Error liking media. Media doesn\'t exist');
-      error.statusCode = 404;
-      throw error;
-    }
+   // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+   await this.getMediaById(mediaId, level);
 
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-      [movieId, userId]);
+      [mediaId, userId]);
 
     if (alreadyExists.length > 0) {
       const error = new Error('Error liking media. Already has been liked.');
@@ -156,7 +121,7 @@ module.exports = class Media {
     }
 
     const [rows] = await db.execute('INSERT INTO `tbl_media_likes` (`likes_media_id`, `likes_user_id`) VALUES ( ?, ? );',
-      [movieId, userId]);
+      [mediaId, userId]);
 
     // If movie exists return else throw error
     if (rows.affectedRows !== 1) {
@@ -172,18 +137,13 @@ module.exports = class Media {
       return response;
     }
   }
-  static async unlikeMedia(movieId, userId) {
-    const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
-      [movieId]);
+  static async unlikeMedia(mediaId, userId, level) {
 
-    if (media.length <= 0) {
-      const error = new Error('Error unliking media. Media doesn\'t exist');
-      error.statusCode = 404;
-      throw error;
-    }
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+   await this.getMediaById(mediaId, level);
 
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-      [movieId, userId]);
+      [mediaId, userId]);
 
     if (alreadyExists.length <= 0) {
       const error = new Error('Error unliking media. Please like it first.');
@@ -192,7 +152,7 @@ module.exports = class Media {
     }
 
     const [rows] = await db.execute('DELETE FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
-      [movieId, userId]);
+      [mediaId, userId]);
 
     // If movie exists return else throw error
     if (rows.affectedRows !== 1) {

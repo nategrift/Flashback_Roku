@@ -16,7 +16,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { requiresNoAuth: true }
   },
   {
     path: '/signup',
@@ -77,7 +78,6 @@ const router = createRouter({
 })
 
 router.beforeEach(function (to, from, next) {
-  store.dispatch('clearError');
   if (to.meta.requiresProfile && !store.getters.hasProfileSelected) {
     if (store.getters.isAuthenticated) {
       next('/profiles')

@@ -18,6 +18,11 @@ export default {
     return state.profile;
   },
   isKid(state) {
+    //  If no profile
+    if (!state.profile) {
+      return false;
+    }
+    //  If profile and kid
     if (state.profile.access < 1) {
       return true;
     } else {

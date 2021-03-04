@@ -18,18 +18,20 @@
           :src="`${publicPath}media/posters/${media.media_cover}`"
           :alt="media.media_title"
         />
-        <p>{{ media.media_title }}</p>
-        <p>{{ media.media_release }}</p>
-        <p>{{ media.media_runtime }}</p>
-        <!-- Links to watch or view details of specific item -->
-        <router-link
-          :to="{ name: 'watch', params: { mediaId: media.media_id } }"
-          >Play</router-link
-        >
-        <router-link
-          :to="{ name: 'MediaDetails', params: { mediaId: media.media_id } }"
-          >Details</router-link
-        >
+        <div class="overlay">
+          <p>{{ media.media_title }}</p>
+          <p>{{ media.media_release }}</p>
+          <p>{{ media.media_runtime }}</p>
+          <!-- Links to watch or view details of specific item -->
+          <router-link
+            :to="{ name: 'watch', params: { mediaId: media.media_id } }"
+            >Play</router-link
+          >
+          <router-link
+            :to="{ name: 'MediaDetails', params: { mediaId: media.media_id } }"
+            >Details</router-link
+          >
+        </div>
       </li>
     </ul>
   </div>
@@ -107,16 +109,48 @@ export default {
   overflow-y: auto;
   height: 80vh;
   padding: 0;
+  margin: 0;
 
   li {
-    min-width: 140px;
-    max-width: 200px;
-    width: 20%;
+    width: 160px;
+    height: 233px;
     margin: 1rem;
-
+    overflow: hidden;
+    position: relative;
+    border-radius: 4px;
     img {
       width: 100%;
+      
     }
+    .overlay {
+      background-color: $color-darkest-overlay;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 102%;
+      height: 102%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 2rem 0;
+
+      p:first-of-type {
+        font-weight: 900;
+      }
+
+      * {
+        margin: 0;
+      }
+    }
+
+    &:hover .overlay {
+      opacity: 1;
+    }
+    
   }
 }
   .kidsTheme {

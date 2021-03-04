@@ -30,7 +30,7 @@ export default {
     let url = payload.url;
     delete payload.url;
 
-    const response = await fetch(config.domain + url, {
+    const response = await fetch(config.apiDomain + url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

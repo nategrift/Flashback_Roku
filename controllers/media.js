@@ -39,12 +39,12 @@ exports.getMediaById = async (req, res, next) => {
   const mediaId = req.params.movieId;
 
   try {
-    let media = await Media.getMediaById(mediaId);
+    let media = await Media.getMediaById(mediaId, req.level);
     let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
 
     res.status(200).json({
       ok: true,
-      media: media[0],
+      media: media,
       hasLiked: hasLikedMedia.hasLiked
     });
 
@@ -56,7 +56,7 @@ exports.getMediaById = async (req, res, next) => {
 exports.getLikeMedia = async (req, res, next) => {
   const mediaId = req.params.movieId;
   try {
-    let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
+    let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id, req.level);
     res.status(201).json(hasLikedMedia);
 
   } catch (err) {
@@ -67,7 +67,7 @@ exports.getLikeMedia = async (req, res, next) => {
 exports.postLikeMedia = async (req, res, next) => {
   const mediaId = req.params.movieId;
   try {
-    let media = await Media.likeMedia(mediaId, req.id);
+    let media = await Media.likeMedia(mediaId, req.id, req.level);
     res.status(201).json(media);
 
   } catch (err) {
@@ -79,7 +79,7 @@ exports.deleteLikeMedia = async (req, res, next) => {
   const mediaId = req.params.movieId;
 
   try {
-    let media = await Media.unlikeMedia(mediaId, req.id);
+    let media = await Media.unlikeMedia(mediaId, req.id, req.level);
     res.status(200).json(media);
 
   } catch (err) {
@@ -87,6 +87,7 @@ exports.deleteLikeMedia = async (req, res, next) => {
   }
 };
 
+// Utility Function for media requests
 exports.mediaSendSuccess = (req, res) => {
   const result = req.media;
   const status = req.status;
