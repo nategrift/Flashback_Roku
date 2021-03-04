@@ -16,7 +16,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { requiresNoAuth: true }
   },
   {
     path: '/signup',
