@@ -90,8 +90,16 @@ module.exports = class Media {
   }
 
   static async getMediaById(movieId) {
-    const [rows] = await db.execute('SELECT m.*, t.types_value as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
-      [movieId]);
+    const [rows] = await db.execute(`
+    SELECT DISTINCT m.*, t.types_value as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
+      LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
+      LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
+      WHERE m.media_id = ?
+      GROUP BY m.media_id;
+    `, [movieId])
+
+    // const [rows] = await db.execute('SELECT m.*, t.types_value as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
+    //   [movieId]);
 
     // If movie exists return else throw error
     if (!rows || rows.length < 1) {
@@ -117,12 +125,12 @@ module.exports = class Media {
 
     if (alreadyExists.length > 0) {
       return {
-        success: true,
+        ok: true,
         hasLiked: true
       }
     } else {
       return {
-        success: true,
+        ok: true,
         hasLiked: false
       }
     }
@@ -157,7 +165,8 @@ module.exports = class Media {
       throw error;
     } else {
       const response = {
-        success: true,
+        ok: true,
+        hasLiked: true,
         message: 'Liked Message'
       }
       return response;
@@ -192,7 +201,8 @@ module.exports = class Media {
       throw error;
     } else {
       const response = {
-        success: true,
+        ok: true,
+        hasLiked: false,
         message: 'Unliked Message'
       }
       return response;

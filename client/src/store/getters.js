@@ -16,5 +16,12 @@ export default {
   },
   profile(state) {
     return state.profile;
+  },
+  isKid(state) {
+    if (state.profile.access < 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 };

@@ -22,7 +22,7 @@ export default {
     }
     localStorage.setItem('token', profile.token);
     localStorage.setItem('userId', profile.userId);
-    localStorage.setItem('profile', profile.profile);
+    localStorage.setItem('profile', JSON.stringify(profile.profile));
 
     await context.commit('setUser', profile);
   },
@@ -97,7 +97,7 @@ export default {
   },
 
   // Logout and remove tokens
-  tryLogin(context) {
+  async tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const tokenExpiration = localStorage.getItem('tokenExpiration');
@@ -113,13 +113,13 @@ export default {
       context.dispatch('autoLogout');
     }, expiresIn)
 
-    const profile = localStorage.getItem('profile');
+    const profile = JSON.parse(localStorage.getItem('profile'));
 
     if (token && userId) {
       context.commit('setUser', {
         token: token,
         userId: userId,
-        profile: profile || ''
+        profile: profile
       })
     }
   },

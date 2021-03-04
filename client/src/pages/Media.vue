@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{kidsTheme: isKid}">
     <logo-full></logo-full>
     <div v-if="types" class="types">
       <router-link
@@ -28,6 +28,7 @@ export default {
     return {
       publicPath: process.env.BASE_URL,
       types: null,
+      isKid: this.$store.getters.isKid
     };
   },
   mounted() {
@@ -75,5 +76,9 @@ export default {
       background-color: $color-dark-overlay;
     }
   }
+}
+
+.kidsTheme {
+  // Kids theme goes here
 }
 </style>

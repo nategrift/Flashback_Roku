@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{kidsTheme: isKid}">
     <router-link to="/">
       <img :src="publicPath + 'logo.svg'" alt="Logo" />
     </router-link>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
+      isKid: this.$store.getters.isKid
     }
   },
   computed: {
@@ -81,5 +82,9 @@ ul {
       display: inline-block;
     }
   }
+}
+
+.kidsTheme {
+  // Kids theme goes here
 }
 </style>

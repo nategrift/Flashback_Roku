@@ -6,6 +6,7 @@ import Profiles from '../pages/Profiles.vue'
 import Browse from '../pages/Browse.vue'
 import Media from '../pages/Media.vue'
 import MediaPlayer from '../pages/MediaPlayer.vue'
+import MediaDetails from '../pages/MediaDetails.vue'
 import NotFound from '../pages/404.vue'
 
 
@@ -42,16 +43,23 @@ const routes = [
     meta: { requiresAuth: true, requiresProfile: true }
   },
   {
-    path: '/media/:types',
-    name: 'browse',
-    component: Browse,
+    path: '/media/watch/:mediaId',
+    name: 'watch',
+    component: MediaPlayer,
     props: true,
     meta: { requiresAuth: true, requiresProfile: true }
   },
   {
-    path: '/media/watch/:mediaId',
-    name: 'watch',
-    component: MediaPlayer,
+    path: '/media/details/:mediaId',
+    name: 'MediaDetails',
+    component: MediaDetails,
+    props: true,
+    meta: { requiresAuth: true, requiresProfile: true }
+  },
+  {
+    path: '/media/:types',
+    name: 'browse',
+    component: Browse,
     props: true,
     meta: { requiresAuth: true, requiresProfile: true }
   },
@@ -69,6 +77,7 @@ const router = createRouter({
 })
 
 router.beforeEach(function (to, from, next) {
+  store.dispatch('clearError');
   if (to.meta.requiresProfile && !store.getters.hasProfileSelected) {
     if (store.getters.isAuthenticated) {
       next('/profiles')

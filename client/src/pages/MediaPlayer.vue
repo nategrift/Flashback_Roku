@@ -1,4 +1,4 @@
-// src="../assets/media/content/movies/hercules.mp4"
+
 <template>
 <!-- Full Video Player -->
   <div
@@ -15,6 +15,12 @@
       @timeupdate="setSlider"
       v-playback-rate="speed"
     ></video>
+
+    <!-- If audio show poster -->
+    <div v-if="mediaIsAudio" class="audio-display" :class="{audioPlaying: mediaPlaying}" @click="togglePlaying">
+      <img :src="posterURL" :alt="mediaName">
+    </div>
+
     <!-- Controls -->
     <div class="controls" v-show="controlsShown">
       <!-- Back Button  -->
@@ -110,9 +116,12 @@ export default {
       speed: 1,
       availableSpeeds: [0.5, 1, 1.5, 2],
       url: "",
-      mediaName: "",
+      posterURL: '',
+      mediaName: '',
+      mediaIsAudio: false,
       publicPath: process.env.BASE_URL,
       timer: null,
+      mediaPlaying: false
       
     };
   },
@@ -152,6 +161,9 @@ export default {
 
         this.url = `${this.publicPath}media/content/${response.media.type}/${response.media.media_src}`;
         this.mediaName = response.media.media_title;
+        this.mediaIsAudio = response.media.type == 'audio';
+        this.posterURL = `${this.publicPath}media/posters/${response.media.media_cover}`
+
         this.$refs.videoPlayer.load();
       } catch (err) {
         await this.$store.dispatch("setError", { error: err });
@@ -168,9 +180,11 @@ export default {
         video.play();
         video.volume = vol.value / 100;
         img.src =`${this.publicPath}pause-solid.svg`;
+        this.mediaPlaying = true;
       } else {
         video.pause();
         img.src =`${this.publicPath}play-solid.svg`;
+        this.mediaPlaying = false;
       }
     },
     changeTime(time) {
@@ -257,6 +271,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../assets/scss/_variables.scss";
+
 $player-accent: #43e5f7;
 
 .video-player {
@@ -406,6 +422,43 @@ input[type="range"]::-ms-fill-upper {
 
 .active {
   color: $player-accent !important;
+}
+
+.audio-display {
+  position: absolute;
+  background: $gradient-background;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    box-shadow: 1rem 1rem 2rem $color-dark-overlay;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(.99);
+  }
+  45% {
+    transform: scale(1.01);
+  }
+  50% {
+    transform: scale(.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.audioPlaying {
+  img {
+    animation: shake 4s ease 0s infinite normal none;
+  }
 }
 
 </style>
