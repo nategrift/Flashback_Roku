@@ -119,7 +119,7 @@ module.exports = class Media {
     }
   }
 
-  static async userHasLikedMedia(movieId, userId) {
+  static async userHasLikedMedia(movieId, userId, level) {
     const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
       [movieId]);
 
@@ -128,6 +128,13 @@ module.exports = class Media {
       error.statusCode = 404;
       throw error;
     }
+
+    if (level < 1 && media[0].media_mature > 0) {
+      const error = new Error('Forbidden. Profile restrictions enabled');
+      error.statusCode = 403;
+      throw error;
+    } 
+
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
       [movieId, userId]);
 
@@ -144,7 +151,9 @@ module.exports = class Media {
     }
   }
 
-  static async likeMedia(movieId, userId) {
+  static async likeMedia(movieId, userId, level) {
+    
+
     const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
       [movieId]);
 
@@ -153,6 +162,12 @@ module.exports = class Media {
       error.statusCode = 404;
       throw error;
     }
+
+    if (level < 1 && media[0].media_mature > 0) {
+      const error = new Error('Forbidden. Profile restrictions enabled');
+      error.statusCode = 403;
+      throw error;
+    } 
 
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
       [movieId, userId]);
@@ -180,7 +195,7 @@ module.exports = class Media {
       return response;
     }
   }
-  static async unlikeMedia(movieId, userId) {
+  static async unlikeMedia(movieId, userId, level) {
     const [media] = await db.execute('SELECT * FROM `tbl_media` as m WHERE m.media_id = ?;',
       [movieId]);
 
@@ -189,6 +204,12 @@ module.exports = class Media {
       error.statusCode = 404;
       throw error;
     }
+
+    if (level < 1 && media[0].media_mature > 0) {
+      const error = new Error('Forbidden. Profile restrictions enabled');
+      error.statusCode = 403;
+      throw error;
+    } 
 
     const [alreadyExists] = await db.execute('SELECT * FROM `tbl_media_likes` WHERE likes_media_id = ? AND likes_user_id = ?;',
       [movieId, userId]);
