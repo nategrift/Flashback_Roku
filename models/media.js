@@ -89,17 +89,18 @@ module.exports = class Media {
     return rows;
   }
 
-  static async getMediaById(movieId) {
-    const [rows] = await db.execute(`
+  static async getMediaById(movieId, level) {
+
+    let query = `
     SELECT DISTINCT m.*, t.types_value as type, COUNT(l.likes_media_id) as likes FROM tbl_media as m 
       LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id 
       LEFT JOIN tbl_media_likes as l ON m.media_id = l.likes_media_id
       WHERE m.media_id = ?
       GROUP BY m.media_id;
-    `, [movieId])
+      `;
 
-    // const [rows] = await db.execute('SELECT m.*, t.types_value as type FROM tbl_media as m LEFT JOIN tbl_media_types as t ON m.media_type_id = t.types_id WHERE m.media_id = ?',
-    //   [movieId]);
+
+    const [rows] = await db.execute(query, [movieId])
 
     // If movie exists return else throw error
     if (!rows || rows.length < 1) {
@@ -107,6 +108,13 @@ module.exports = class Media {
       error.statusCode = 404;
       throw error;
     } else {
+
+      if (level < 1 && rows[0].media_mature > 0) {
+        const error = new Error('Forbidden. Profile restrictions enabled');
+        error.statusCode = 403;
+        throw error;
+      }
+
       return rows;
     }
   }

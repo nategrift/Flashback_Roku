@@ -39,7 +39,7 @@ exports.getMediaById = async (req, res, next) => {
   const mediaId = req.params.movieId;
 
   try {
-    let media = await Media.getMediaById(mediaId);
+    let media = await Media.getMediaById(mediaId, req.level);
     let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
 
     res.status(200).json({

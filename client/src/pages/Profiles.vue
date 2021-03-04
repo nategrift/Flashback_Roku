@@ -75,6 +75,7 @@ export default {
           pin: pinObject,
           token: this.$store.getters.token,
         });
+        this.$store.dispatch('clearError');
         this.$router.push("/media");
         this.showPinpad = false;
       } catch (err) {

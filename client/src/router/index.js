@@ -77,7 +77,6 @@ const router = createRouter({
 })
 
 router.beforeEach(function (to, from, next) {
-  store.dispatch('clearError');
   if (to.meta.requiresProfile && !store.getters.hasProfileSelected) {
     if (store.getters.isAuthenticated) {
       next('/profiles')
