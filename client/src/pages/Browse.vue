@@ -3,7 +3,8 @@
     <!-- Title logo specific for current content section -->
     <img :src="publicPath + 'titles/' + types + '.png'" :alt="types" />
     <!-- Filter Button -->
-    <select ref="range" @change="changeRange()">
+    <label class="range-label" for="range">Time Frame</label>
+    <select ref="range" @change="changeRange()" id="range">
       <option type="checkbox" name="range" value="all" selected>All</option>
       <option type="checkbox" name="range" value="1950">1950s</option>
       <option type="checkbox" name="range" value="1960">1960s</option>
@@ -119,7 +120,7 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   overflow-y: auto;
-  height: 80vh;
+  height: 60vh;
   padding: 0;
   margin: 0;
   padding-top: 4rem;
@@ -176,22 +177,29 @@ export default {
 }
 
   select {
-    -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;  
+    -webkit-appearance: none; 
+    appearance: none;
     background-color: $color-input;
     color: $color-text;
     border-radius: 3px;
     outline: 0;
     border: 0;
     font-size: 1.6rem;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     cursor: pointer;
     transition: color 1s;
+    text-align: center;
 
     &:hover {
       background-color: $color-input-hover;
     }
+  }
+
+  .range-label {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+
   }
 
   option {
