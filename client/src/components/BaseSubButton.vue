@@ -7,6 +7,9 @@ export default {
   props: {
     click: {
       type: Function
+    },
+    type: {
+      type: String
     }
   }
 }
@@ -15,7 +18,7 @@ export default {
 <style lang="scss" scoped>
   @import '../assets/scss/_variables.scss';
 
-  button {
+  button, select {
     background-color: $color-input;
     color: $color-text;
     border-radius: 3px;
