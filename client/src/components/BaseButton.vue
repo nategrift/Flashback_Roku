@@ -40,5 +40,6 @@ button, a {
   outline: none;
   border: none;
   border-radius: 3px;
+  cursor: pointer;
 }
 </style>

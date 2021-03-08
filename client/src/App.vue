@@ -76,5 +76,8 @@ a {
   text-decoration: none;
   font-size: 1.6rem;
 }
+p {
+      font-size: 1.4rem;
+}
   
 </style>

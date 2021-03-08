@@ -14,7 +14,12 @@
         v-model.trim="password"
       ></base-input>
       <base-button type="submit">Login</base-button>
-      <router-link to="/signup">SignUp</router-link>
+      <div>
+        <p>Don't have an account yet?</p>
+        <router-link to="/signup">
+          <base-sub-button>SignUp</base-sub-button>
+        </router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -23,12 +28,14 @@
 import BaseInput from "../components/BaseInput";
 import BaseButton from "../components/BaseButton";
 import LogoFull from "../components/LogoFull.vue";
+import BaseSubButton from "../components/BaseSubButton.vue";
 
 export default {
   components: {
     BaseInput,
     BaseButton,
     LogoFull,
+    BaseSubButton,
   },
   data() {
     return {
@@ -58,5 +65,17 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  height: 30vh;
+
+
+  input:last-of-type {
+    margin-bottom: 20p !important;
+  }
 }
+
+div {
+    p {
+      font-size: 1.4rem;
+    }
+  }
 </style>
