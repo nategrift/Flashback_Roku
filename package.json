@@ -1,11 +1,12 @@
 {
   "name": "flashback",
-  "version": "0.1.0",
+  "version": "0.8.2",
   "description": "Flashback Roku Application",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "startdev": "nodemon index.js"
+    "startapi": "nodemon index.js",
+    "startclient": " cd client && npm run serve"
   },
   "keywords": [],
   "author": "",
