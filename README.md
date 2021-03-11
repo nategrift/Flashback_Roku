@@ -10,9 +10,10 @@
 *Please install both api and client side to use this application*
 
 **API Server Installation**
-1. A MySql server needs to be running with a copy of the database located in the `/database` folder.
-2. Type `npm install` to install the dependencies.
-3. You will need to create a `.env` file. Simply copy the `sample.env` file and rename it to `.env`.  Make sure the enviroment variables match your MySQL database. Example of the `.env`:
+1. Download folder from Github or use git to clone repo.
+2. A MySql server needs to be running with a copy of the database located in the `/database` folder.
+3. Type `npm install` within project directory to install the dependencies.
+4. You will need to create a `.env` file. Simply copy the `sample.env` file and rename it to `.env`.  Make sure the enviroment variables match your MySQL database. Example of the `.env`:
 ```[env]
 PORT=5000
 DB_HOST=localhost
@@ -20,7 +21,7 @@ DB_USERNAME=root
 DB_PASSWORD=root
 DB_PORT=8889
 ```
-4. To run the API, type `npm run startdev`.
+5. To run the API, type `npm run startdev`.
 
 **Client Side Vue CLI Installation**
 1. You need to get a copy of the media in order for the app to run, to get a copy click the `Download All` button on [this](https://drive.google.com/drive/folders/1qTDlS8H8UoGyCwA8r66NuqsoAOAQy7XI?usp=sharing) webpage.  **Important: Please rename this folder to `media`.** This folder contains the posters and the videos for the application.
