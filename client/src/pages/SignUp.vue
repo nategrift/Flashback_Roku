@@ -16,7 +16,12 @@
       ></base-input>
       <base-input label="Pin" type="number" v-model.trim="pin"></base-input>
       <base-button type="submit">SignUp</base-button>
-      <router-link to="/login">Login</router-link>
+      <div>
+        <p>Have an account already?</p>
+        <router-link to="/login">
+          <base-sub-button>Login</base-sub-button>
+        </router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -25,12 +30,14 @@
 import BaseInput from "../components/BaseInput";
 import BaseButton from "../components/BaseButton";
 import LogoFull from "../components/LogoFull.vue";
+import BaseSubButton from "../components/BaseSubButton.vue";
 
 export default {
   components: {
     BaseInput,
     BaseButton,
-    LogoFull
+    LogoFull,
+    BaseSubButton
   },
   data() {
     return {

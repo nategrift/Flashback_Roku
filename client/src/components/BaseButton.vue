@@ -40,5 +40,12 @@ button, a {
   outline: none;
   border: none;
   border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+
+  &:hover {
+      background-color: $color-accent-hover;
+  }
 }
 </style>

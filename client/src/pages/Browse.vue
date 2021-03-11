@@ -3,7 +3,8 @@
     <!-- Title logo specific for current content section -->
     <img :src="publicPath + 'titles/' + types + '.png'" :alt="types" />
     <!-- Filter Button -->
-    <select ref="range" @change="changeRange()">
+    <label class="range-label" for="range">Time Frame</label>
+    <select ref="range" @change="changeRange()" id="range">
       <option type="checkbox" name="range" value="all" selected>All</option>
       <option type="checkbox" name="range" value="1950">1950s</option>
       <option type="checkbox" name="range" value="1960">1960s</option>
@@ -25,11 +26,13 @@
           <!-- Links to watch or view details of specific item -->
           <router-link
             :to="{ name: 'watch', params: { mediaId: media.media_id } }"
-            >Play</router-link
+            >
+            <base-sub-button>Play</base-sub-button>
+            </router-link
           >
           <router-link
             :to="{ name: 'MediaDetails', params: { mediaId: media.media_id } }"
-            >Details</router-link
+            ><base-sub-button>Details</base-sub-button></router-link
           >
         </div>
       </li>
@@ -39,7 +42,12 @@
 
 <script>
 import fetchServer from "../util/requestsJwt";
+import baseSubButton from "../components/BaseSubButton"
+
 export default {
+  components: {
+    baseSubButton
+  },
   props: {
     types: {
       required: true,
@@ -100,6 +108,11 @@ export default {
 @import "../assets/scss/_variables.scss";
 .media {
   overflow: hidden;
+  padding-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .mediaList {
   list-style: none;
@@ -107,9 +120,10 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   overflow-y: auto;
-  height: 80vh;
+  height: 60vh;
   padding: 0;
   margin: 0;
+  padding-top: 4rem;
 
   li {
     width: 160px;
@@ -131,7 +145,7 @@ export default {
       height: 102%;
       transform: translate(-50%, -50%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.2s;
       font-size: 1.6rem;
       display: flex;
       flex-direction: column;
@@ -145,6 +159,14 @@ export default {
       * {
         margin: 0;
       }
+
+      button {
+        background-color: $color-accent;
+
+        &:hover {
+          background-color: $color-accent-hover;
+        }
+      }
     }
 
     &:hover .overlay {
@@ -153,7 +175,36 @@ export default {
     
   }
 }
-  .kidsTheme {
-    // Kids theme styles go here
+
+  select {
+    -moz-appearance: none;
+    -webkit-appearance: none; 
+    appearance: none;
+    background-color: $color-input;
+    color: $color-text;
+    border-radius: 3px;
+    outline: 0;
+    border: 0;
+    font-size: 1.6rem;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    transition: color 1s;
+    text-align: center;
+
+    &:hover {
+      background-color: $color-input-hover;
+    }
   }
+
+  .range-label {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+
+  }
+
+  option {
+    color: $color-darkest;
+  }
+
+  
 </style>
