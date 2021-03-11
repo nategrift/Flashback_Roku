@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 02, 2021 at 07:45 PM
+-- Generation Time: Mar 11, 2021 at 10:55 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -119,8 +119,8 @@ INSERT INTO `tbl_media` (`media_id`, `media_cover`, `media_title`, `media_desc`,
 (25, 'oz_poster.jpg', 'Oz', 'Oz is an American television drama series set at a fictional men\'s prison created by Tom Fontana, who also wrote or co-wrote all of the series\'s 56 episodes.', '1m', 'oz.mp4', 2, 1997, 1, '2021-01-29 22:13:54'),
 (26, 'the_mickey_mouse_club_poster.jpg', 'The Mickey Mouse Club House', 'Mickey Mouse Clubhouse is an American interactive computer-animated children\'s television series which aired from May 5, 2006, to November 6, 2016.', '3m', 'the_mickey_mouse_club.mp4', 2, 1955, 0, '2021-01-29 22:14:51'),
 (27, 'the_archie_show_poster.jpg', 'The Archie Show', 'The Archie Show (also known as The Archies) is an American musical sitcom television series produced by Filmation for CBS. Based on the Archie Comics, created by Bob Montana in 1941.', '1m', 'the_archie_show.mp4', 2, 1968, 0, '2021-01-29 22:15:48'),
-(28, 'fat_albert_poster.jpg', 'Fat Albert', 'at Albert and the Cosby Kids is an American animated television series created, produced, and hosted (in live action bookends) by comedian Bill Cosby.', '1m', 'fat_albert.mp4', 2, 1972, 0, '2021-01-29 22:16:50'),
-(29, 'the_inrcedible_hulk_poster.jpg', 'The Incredible Hulk', 'he Incredible Hulk is an American television series based on the Marvel Comics character The Hulk.', '1m', 'the_inrcedible_hulk.mp4', 2, 1977, 0, '2021-01-29 22:18:03'),
+(28, 'fat_albert_poster.jpg', 'Fat Albert', 'at Albert and the Cosby Kids is an American animated television series created, produced, and hosted (in live action bookends) by comedian Bill Cosby.', '1m', 'fat_albert.mp4', 2, 1991, 0, '2021-01-29 22:16:50'),
+(29, 'the_incredible_hulk_poster.jpg', 'The Incredible Hulk', 'he Incredible Hulk is an American television series based on the Marvel Comics character The Hulk.', '1m', 'the_inrcedible_hulk.mp4', 2, 1977, 0, '2021-01-29 22:18:03'),
 (30, 'the_real_ghostbusters_poster.jpg', 'The Real Ghostbusters', 'The Real Ghostbusters is an American animated television series, a spin-off/sequel of the 1984 comedy movie Ghostbusters.', '1m', 'the_real_ghostbusters.mp4', 2, 1986, 0, '2021-01-29 22:18:58');
 
 -- --------------------------------------------------------
@@ -135,14 +135,6 @@ CREATE TABLE `tbl_media_likes` (
   `likes_user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tbl_media_likes`
---
-
-INSERT INTO `tbl_media_likes` (`likes_id`, `likes_media_id`, `likes_user_id`) VALUES
-(32, 13, 2),
-(36, 11, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -152,17 +144,18 @@ INSERT INTO `tbl_media_likes` (`likes_id`, `likes_media_id`, `likes_user_id`) VA
 CREATE TABLE `tbl_media_types` (
   `types_id` int(11) NOT NULL,
   `types_value` varchar(40) NOT NULL,
-  `types_title` varchar(80) NOT NULL
+  `types_title` varchar(80) NOT NULL,
+  `types_icon` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tbl_media_types`
 --
 
-INSERT INTO `tbl_media_types` (`types_id`, `types_value`, `types_title`) VALUES
-(1, 'movie', 'Movies'),
-(2, 'tvshow', 'Tv Shows'),
-(3, 'audio', 'Music');
+INSERT INTO `tbl_media_types` (`types_id`, `types_value`, `types_title`, `types_icon`) VALUES
+(1, 'movie', 'Movies', 'movie_icon.svg'),
+(2, 'tvshow', 'Tv Shows', 'tvshow_icon.svg'),
+(3, 'audio', 'Music', 'audio_icon.svg');
 
 -- --------------------------------------------------------
 
@@ -233,7 +226,7 @@ ALTER TABLE `tbl_profiles`
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tbl_comments`
@@ -257,7 +250,7 @@ ALTER TABLE `tbl_media`
 -- AUTO_INCREMENT for table `tbl_media_likes`
 --
 ALTER TABLE `tbl_media_likes`
-  MODIFY `likes_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `likes_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `tbl_media_types`
@@ -269,7 +262,7 @@ ALTER TABLE `tbl_media_types`
 -- AUTO_INCREMENT for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
-  MODIFY `profiles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `profiles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
