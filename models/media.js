@@ -169,4 +169,43 @@ module.exports = class Media {
     }
   }
 
+
+  static async addComment(mediaId, userId, level, copy) {
+    
+
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+    await this.getMediaById(mediaId, level);
+    
+     const [rows] = await db.execute('INSERT INTO `tbl_comments` (`comments_copy`, `comments_media_id`, `comments_user_id`) VALUES ( ?, ?, ? );',
+       [copy, mediaId, userId]);
+
+    const comments = await this.getComments(mediaId, level)
+      // If movie exists return else throw error
+     if (rows.affectedRows !== 1) {
+       const error = new Error('Error liking media. Check to make sure media id exists.');
+       error.statusCode = 404;
+       throw error;
+      
+     } else {
+       const response = {
+         ok: true,
+         comments: comments
+       }
+       return response;
+     }
+   }
+
+   static async getComments(mediaId, level) {
+    
+
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+    await this.getMediaById(mediaId, level);
+    
+
+    const [comments] = await db.execute('SELECT c.comments_id as comment_id, c.comments_copy as comment_copy, a.account_username as comment_username FROM `tbl_comments` AS c LEFT JOIN `tbl_accounts` AS a ON a.account_id = c.comments_user_id WHERE comments_media_id = ?;',
+      [mediaId]);
+
+    // return comments
+    return comments;
+   }
 }

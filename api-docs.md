@@ -24,15 +24,11 @@ POST `/media/<media_id>/like-media`
 #### UnLike Media
 DELETE `/media/<media_id>/like-media`
 
-#### ~~Comment on Media~~ (Not Created yet)
+#### Comment on Media (Not Created yet)
 POST `/media/<media_id>/comment`
 
 **Params (BODY):**
   - copy *(comment text)*
-
-#### ~~Delete Comment on Media~~ (Not Created yet)
-Delete `/media/<media_id>/comment/<comment_id>`
-
 
 
 ### Accounts

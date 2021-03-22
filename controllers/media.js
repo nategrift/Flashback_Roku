@@ -42,6 +42,9 @@ exports.getMediaById = async (req, res, next) => {
     let media = await Media.getMediaById(mediaId, req.level);
     let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
 
+    // Get comments
+    media.comments = await Media.getComments(mediaId, req.level);
+
     res.status(200).json({
       ok: true,
       media: media,
@@ -98,6 +101,27 @@ exports.mediaSendSuccess = (req, res) => {
   })
 
 };
+
+
+exports.addComment = async (req, res, next) => {
+  const mediaId = req.params.movieId;
+  const copy = req.body.copy;
+
+
+  // Validation to make sure there is copy
+  if (!copy || copy.length < 1) {
+    next(newError('Unable to create comment. Please include copy with your comment.'))
+  }
+  try {
+    let commentResponse = await Media.addComment(mediaId, req.id, req.level, copy);
+    res.status(201).json(commentResponse);
+
+  } catch (err) {
+    return next(newError(err))
+  }
+
+};
+
 
 
 

@@ -52,13 +52,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background: $gradient-background;
   width: 100%;
   height: 100vh;
   color: $color-text;
 }
 html {
   font-size: 62.5%;
+  background: $gradient-background;
 }
 body {
   margin: 0;

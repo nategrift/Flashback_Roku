@@ -61,6 +61,30 @@
           Share
         </a>
       </div>
+      <div class="comments">
+        <div class="comment-header">
+          <h2>Comments:</h2>
+          <base-sub-button :click="addCommentHandler"
+          >{{commentButtonText}}</base-sub-button>
+        </div>
+        <div class="comment-add" v-if="commentAddBoxShown">
+          <base-textarea label="Add Comment" v-model="commentCopy"></base-textarea>
+          <base-sub-button :click="addComment"
+          >Post</base-sub-button>
+        </div>
+        <div v-if="noComments">
+          <div class="comment" v-for="comment in media.comments" :key="comment.comment_id">
+           <p>{{ comment.comment_username }}</p>
+           <p>{{ comment.comment_copy }}</p>
+          </div>
+        </div>
+        <div v-else>
+          <div>
+            <h2>No comments for this media yet</h2>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -69,11 +93,14 @@
 import fetchServer from "../util/requestsJwt";
 import config from "../config";
 import BaseSubButton from "../components/BaseSubButton";
+import BaseTextarea from "../components/BaseTextarea";
+
 
 export default {
   name: "MediaDetails",
   components: {
     BaseSubButton,
+    BaseTextarea
   },
   data() {
     return {
@@ -81,6 +108,8 @@ export default {
       publicPath: process.env.BASE_URL,
       hasLiked: false,
       hostName: config.host,
+      commentAddBoxShown: false,
+      commentCopy: ''
     };
   },
   props: {
@@ -88,6 +117,14 @@ export default {
       required: true,
       type: String,
     },
+  },
+  computed: {
+    commentButtonText() {
+      return this.commentAddBoxShown ? 'Hide' : 'Add Comment'
+    },
+    noComments() {
+      return this.media.comments.length > 0
+    }
   },
   mounted() {
     this.getMovie();
@@ -128,12 +165,35 @@ export default {
         this.$router.push("/media");
       }
     },
+    addCommentHandler() {
+      this.commentAddBoxShown = !this.commentAddBoxShown
+    },
+    async addComment() {
+      try {
+        const response = await fetchServer(
+          `/api/media/${this.mediaId}/comment`,
+          "POST",
+          this.$store.getters.token,
+          {copy: this.commentCopy}
+        );
+
+        // Set new comments to the video
+        this.media.comments = response.comments
+        this.commentAddBoxShown = false;
+        this.commentCopy = '';
+
+      } catch (err) {
+        await this.$store.dispatch("setError", { error: err });
+        this.commentAddBoxShown = false;
+      }
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../assets/scss/_variables.scss";
+
 
 .top-right {
   position: absolute;
@@ -206,6 +266,57 @@ export default {
   width: 220px;
   margin: 0 auto;
   margin-top: 2rem;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 6rem auto;
+    width: 60%;
+    min-width: 300px;
+
+  & > div:last-of-type {
+    width: 100%;
+  }
+  .comment-header {
+     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    h2 {
+        font-size: 2.4rem;
+    }
+  }
+  .comment {
+    background-color: $color-dark-overlay;
+    padding: 2rem 4rem;
+    margin: 1rem 0;
+    text-align: left;
+    width: 100%;
+
+    p {
+      margin: 0.5rem;
+    }
+
+    p:first-of-type {
+      font-weight: 900;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .comment-add {
+    width: 100%;
+    margin: 1rem 0 2rem 0;
+    button {
+      width: 100%;
+      background-color: $color-accent;
+    }
+}
+
 }
 
 </style>
