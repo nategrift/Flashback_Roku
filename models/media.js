@@ -204,21 +204,7 @@ module.exports = class Media {
     const [comments] = await db.execute('SELECT c.comments_id as comment_id, c.comments_copy as comment_copy, a.account_username as comment_username FROM `tbl_comments` AS c LEFT JOIN `tbl_accounts` AS a ON a.account_id = c.comments_user_id WHERE comments_media_id = ?;',
       [mediaId]);
 
-     // response object
-     const response = {
-      ok: true,
-      comments: comments,
-      message: ''
-    }
-
-    // Response message based on length of comments
-    if (comments.length == 0) {
-      response.message = 'No comments currently available'
-    } else {
-      response.message = `Found ${comments.length} comments`
-    }
-
-    // return response
-    return response;
+    // return comments
+    return comments;
    }
 }

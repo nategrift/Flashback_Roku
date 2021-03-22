@@ -42,6 +42,9 @@ exports.getMediaById = async (req, res, next) => {
     let media = await Media.getMediaById(mediaId, req.level);
     let hasLikedMedia = await Media.userHasLikedMedia(mediaId, req.id);
 
+    // Get comments
+    media.comments = await Media.getComments(mediaId, req.level);
+
     res.status(200).json({
       ok: true,
       media: media,
@@ -118,18 +121,7 @@ exports.addComment = async (req, res, next) => {
   }
 
 };
-exports.getComments = async (req, res, next) => {
-  const mediaId = req.params.movieId;
 
-  try {
-    let commentResponse = await Media.getComments(mediaId, req.level);
-    res.status(201).json(commentResponse);
-
-  } catch (err) {
-    return next(newError(err))
-  }
-
-};
 
 
 
