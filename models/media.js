@@ -175,7 +175,7 @@ module.exports = class Media {
 
     // Get Media by Id.  If it doesn't exist or restricted it will throw an error
     await this.getMediaById(mediaId, level);
-    console.log(copy, mediaId, userId)
+    
      const [rows] = await db.execute('INSERT INTO `tbl_comments` (`comments_copy`, `comments_media_id`, `comments_user_id`) VALUES ( ?, ?, ? );',
        [copy, mediaId, userId]);
  
@@ -192,5 +192,33 @@ module.exports = class Media {
        }
        return response;
      }
+   }
+
+   static async getComments(mediaId, level) {
+    
+
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+    await this.getMediaById(mediaId, level);
+    
+
+    const [comments] = await db.execute('SELECT c.comments_id as comment_id, c.comments_copy as comment_copy, a.account_username as comment_username FROM `tbl_comments` AS c LEFT JOIN `tbl_accounts` AS a ON a.account_id = c.comments_user_id WHERE comments_media_id = ?;',
+      [mediaId]);
+
+     // response object
+     const response = {
+      ok: true,
+      comments: comments,
+      message: ''
+    }
+
+    // Response message based on length of comments
+    if (comments.length == 0) {
+      response.message = 'No comments currently available'
+    } else {
+      response.message = `Found ${comments.length} comments`
+    }
+
+    // return response
+    return response;
    }
 }

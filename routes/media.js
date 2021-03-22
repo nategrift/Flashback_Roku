@@ -12,7 +12,7 @@ router.get('/:movieId/like-media', mediaController.getLikeMedia);// Has user lik
 router.post('/:movieId/like-media', mediaController.postLikeMedia);
 router.delete('/:movieId/like-media', mediaController.deleteLikeMedia);
 
-// router.get('/:movieId/comment', mediaController.getComments);
+router.get('/:movieId/comment', mediaController.getComments);
 router.post('/:movieId/comment', mediaController.addComment);
 
 module.exports = router;

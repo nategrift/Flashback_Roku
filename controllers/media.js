@@ -118,6 +118,18 @@ exports.addComment = async (req, res, next) => {
   }
 
 };
+exports.getComments = async (req, res, next) => {
+  const mediaId = req.params.movieId;
+
+  try {
+    let commentResponse = await Media.getComments(mediaId, req.level);
+    res.status(201).json(commentResponse);
+
+  } catch (err) {
+    return next(newError(err))
+  }
+
+};
 
 
 
