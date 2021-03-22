@@ -169,4 +169,28 @@ module.exports = class Media {
     }
   }
 
+
+  static async addComment(mediaId, userId, level, copy) {
+    
+
+    // Get Media by Id.  If it doesn't exist or restricted it will throw an error
+    await this.getMediaById(mediaId, level);
+    console.log(copy, mediaId, userId)
+     const [rows] = await db.execute('INSERT INTO `tbl_comments` (`comments_copy`, `comments_media_id`, `comments_user_id`) VALUES ( ?, ?, ? );',
+       [copy, mediaId, userId]);
+ 
+     // If movie exists return else throw error
+     if (rows.affectedRows !== 1) {
+       const error = new Error('Error liking media. Check to make sure media id exists.');
+       error.statusCode = 404;
+       throw error;
+
+     } else {
+       const response = {
+         ok: true,
+         comments: copy // Later change this to a new list of all the comments for a media
+       }
+       return response;
+     }
+   }
 }
