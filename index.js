@@ -19,15 +19,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors())
 
+app.use(express.static('client/dist'));
+
 // API Routes
 app.use('/api', require('./middleware/invalidBody'), apiRoutes)
 
 // Application
 app.use('/', (req, res) => {
-  res.status(404).json({
-    ok: true,
-    message: 'No endpoint found'
-  })
+  res.status(200).sendFile('client/dist/index.html', {root: __dirname })
 });
 
 app.use((error, req, res, next) => {
