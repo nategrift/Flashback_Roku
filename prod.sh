@@ -12,7 +12,7 @@ cp ../../config.example.js src/config.js
 npm install
 npm run build
 
-cp ../../media dist/media
+cp -r ../../media dist/media
 
 #return to original  folder
 cd ..
