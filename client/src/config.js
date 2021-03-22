@@ -1,4 +1,4 @@
 export default {
-  apiDomain: 'http://localhost:5000',
+  apiDomain: 'http://localhost:5001',
   host: 'http://fanci.ca'
 }

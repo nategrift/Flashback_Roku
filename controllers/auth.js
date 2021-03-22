@@ -39,7 +39,7 @@ exports.postCreateAccount = async (req, res, next) => {
 
     // Check pin
     if (pin.length !== 4 || !/^\d+$/.test(pin)) {
-      return next(newError('Invalid Admin Pin', 409));
+      return next(newError('Invalid Admin Pin, requires only 4 numbers', 409));
     }
     // Query Database for existing user
     const userTaken = await User.isUsernameTaken(username);

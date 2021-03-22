@@ -14,7 +14,7 @@
         type="password"
         v-model.trim="password"
       ></base-input>
-      <base-input label="Pin" type="number" v-model.trim="pin"></base-input>
+      <base-input label="Pin (4 Numbers)" type="number" v-model.trim="pin"></base-input>
       <base-button type="submit">SignUp</base-button>
       <div>
         <p>Have an account already?</p>
