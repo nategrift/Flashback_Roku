@@ -15,7 +15,7 @@
 3. Type `npm install` within project directory to install the dependencies.
 4. You will need to create a `.env` file. Simply copy the `sample.env` file and rename it to `.env`.  Make sure the enviroment variables match your MySQL database. Example of the `.env`:
 ```[env]
-PORT=5000
+PORT=5001
 DB_HOST=localhost
 DB_USERNAME=root
 DB_PASSWORD=root
