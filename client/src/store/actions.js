@@ -2,6 +2,7 @@ import config from '../config.js';
 import fetchServer from '../util/requestsJwt'
 
 let clearTokenTimer;
+let errorTimeout;
 
 export default {
   async login(context, payload) {
@@ -69,10 +70,15 @@ export default {
     context.commit('setError', {
       error: payload.error.message || payload.error || 'An error occured',
     });
+
+    errorTimeout = setTimeout(() => {
+      context.dispatch("clearError");
+    }, 4000)
   },
 
   // Setting errors
   clearError(context) {
+    clearTimeout(errorTimeout)
     context.commit('setError', {
       error: null,
     });

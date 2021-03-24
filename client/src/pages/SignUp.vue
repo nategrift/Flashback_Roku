@@ -16,7 +16,7 @@
       ></base-input>
       <base-input label="Pin (4 Numbers)" type="number" v-model.trim="pin"></base-input>
       <base-button type="submit">SignUp</base-button>
-      <div>
+      <div class="mb-small">
         <p>Have an account already?</p>
         <router-link to="/login">
           <base-sub-button>Login</base-sub-button>
@@ -71,5 +71,9 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+.mb-small {
+  margin-bottom: 2rem;
 }
 </style>

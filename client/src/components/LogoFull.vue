@@ -22,6 +22,6 @@ img {
   max-width: 709px;
   width: 60%;
   min-width: 320px;
-  margin: 0 auto;
+  margin: 3rem auto 0 auto;
 }
 </style>
