@@ -1,5 +1,17 @@
 # Design Information
 
+## Description
+The style of this application is similar to Roku and designed to look like a TV sort of application but on a the web. The design is primarily blue for the background, with red as an accent color.  White was used for the text to make a nice contrast.
+
+A kid theme was added for the kids profile.  The theme is similar to the overall application to provide consistancy.  A few differences are:
+
+  - More rounded movies being displayed
+  - Dramatically reduced amount of information on screen
+  - Removed lots of unneccessary content for kids.  
+  - Hid ability to add comments on client side.
+  - Made buttons more obvious
+  - Added clear `Flashback Kids` stamp in top right corner
+
 ## Typeface
 
 **Logo font:**
