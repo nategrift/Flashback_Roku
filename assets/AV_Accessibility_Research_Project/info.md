@@ -6,8 +6,10 @@
 
 **Audio Example**
 [Live Audio Example](https://flashback.nategrift.com/media/watch/7)
+
 **Video 1 Example**
 [Live Movie Example](https://flashback.nategrift.com/media/watch/16)
+
 **Video 2 Example**
 [Live Tvshow Example](https://flashback.nategrift.com/media/watch/27)
 
