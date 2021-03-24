@@ -6,7 +6,8 @@
 
     <!-- Profile Nav -->
     <ul v-if="hasProfileSelected">
-      <li>
+      <div>
+        <li>
         <router-link to="/media">Media</router-link>
       </li>
       <li>
@@ -15,7 +16,14 @@
       <li>
         <a @click="logout">Logout</a>
       </li>
+      </div>
+      <div v-if="isKid" class="kidsTitle">
+        <li>
+        <p>Flashback Kids</p>
+      </li>
+      </div>
     </ul>
+     
     <!-- Logged in but no profile Nav -->
     <ul v-else-if="isLoggedIn">
       <li>
@@ -39,7 +47,6 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
-      isKid: this.$store.getters.isKid
     }
   },
   computed: {
@@ -49,6 +56,9 @@ export default {
     hasProfileSelected() {
       return this.$store.getters.hasProfileSelected;
     },
+    isKid() {
+      return this.$store.getters.isKid
+    } 
   },
 };
 </script>
@@ -69,9 +79,12 @@ ul {
   list-style: none;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-
+  justify-content: space-between;
+  width: 100%;
+  div {
+    display: flex;
+    align-items: center;
+  }
   li {
     cursor: pointer;
     a {
@@ -84,7 +97,16 @@ ul {
   }
 }
 
-.kidsTheme {
-  // Kids theme goes here
+.kidsTitle {
+
+  p {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+    padding: 0.7rem 3rem;
+    border-radius: 1rem;
+    background-color: $light-background-color;
+  }
+  
 }
 </style>
