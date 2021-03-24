@@ -206,9 +206,11 @@ export default {
     color: $color-darkest;
   }
 
+// KIDS THEME SECTION
   .kidsTheme {
-   
-
+    button {
+      transform: scale(1.2)
+    }
     .mediaList {
       li{
         border-radius: 2rem;
@@ -218,7 +220,8 @@ export default {
         transition: transform 0.2s;
         .overlay {
           p:first-of-type {
-            font-size: 1.8rem
+            font-size: 1.8rem;
+            padding: 0.4rem;
           }
         }
       }

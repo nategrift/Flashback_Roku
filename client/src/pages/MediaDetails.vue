@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{kidsTheme: isKid}">
     <h1>Details</h1>
     <base-sub-button class="top-right" :click="routerBack"
       >Back</base-sub-button
@@ -14,7 +14,7 @@
         <p class="desc">{{ media.media_desc }}</p>
         <p class="info">Runtime: <strong>{{ media.media_runtime }}</strong></p>
         <p class="info">Released: <strong>{{ media.media_release }}</strong></p>
-        <p class="info">Mature Content: <strong>{{ media.media_mature }}</strong></p>
+        <p class="info" v-show="!isKid">Mature Content: <strong>{{ media.media_mature }}</strong></p>
         <p class="info">Likes: <strong>{{ media.likes }}</strong></p>
         <p class="info">Media Type: <strong>{{ media.type }}</strong></p>
         <div class="actions">
@@ -26,7 +26,7 @@
           >
         </div>
       </div>
-      <div class="social-list">
+      <div class="social-list" v-show="!isKid">
         <!-- Share on facebook -->
         <a
           class="share-button facebook-share"
@@ -61,7 +61,7 @@
           Share
         </a>
       </div>
-      <div class="comments">
+      <div class="comments" v-show="!isKid">
         <div class="comment-header">
           <h2>Comments:</h2>
           <base-sub-button :click="addCommentHandler"
@@ -109,7 +109,8 @@ export default {
       hasLiked: false,
       hostName: config.host,
       commentAddBoxShown: false,
-      commentCopy: ''
+      commentCopy: '',
+      isKid: this.$store.getters.isKid
     };
   },
   props: {
@@ -318,5 +319,14 @@ export default {
 }
 
 }
+
+
+// KIDS THEME SECTION
+  .kidsTheme {
+
+  button {
+    background-color: $color-accent;
+  }
+  }
 
 </style>
