@@ -198,8 +198,8 @@ export default {
 
 .top-right {
   position: absolute;
-  top: 9rem;
-  left: 4rem;
+  top: 7.5rem;
+  left: 2rem;
 }
 
 .details {
@@ -225,8 +225,10 @@ export default {
 }
 
 .details-page {
-  img {
+  margin-bottom: 3rem;
+  & > img {
     max-width: 200px;
+    margin-top: 2.5rem;
   }
 }
 
@@ -327,6 +329,13 @@ export default {
   button {
     background-color: $color-accent;
   }
+}
+
+@media (min-width: 600px) {
+  .top-right {
+    top: 9rem;
+    left: 4rem;
   }
+}
 
 </style>

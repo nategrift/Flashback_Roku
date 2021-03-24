@@ -42,7 +42,7 @@ export default {
     padding: 1rem 1.5rem;
     outline: none;
     border: none;
-    margin-bottom: 10px;
+    margin-bottom: 1.5rem;
     font-size: inherit;
   }
   label {

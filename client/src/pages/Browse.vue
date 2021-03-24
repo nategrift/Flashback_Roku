@@ -1,7 +1,7 @@
 <template>
   <div class="media" :class="{kidsTheme: isKid}">
     <!-- Title logo specific for current content section -->
-    <img :src="publicPath + 'titles/' + types + '.png'" :alt="types"/>
+    <img :src="publicPath + 'titles/' + types + '.png'" :alt="types" class="image-title"/>
     <!-- Filter Button -->
     <label class="range-label" for="range" v-show="!isKid">Time Frame</label>
     <select ref="range" @change="changeRange()" id="range" v-show="!isKid">
@@ -107,7 +107,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/_variables.scss";
 .media {
-  overflow: hidden;
+  overflow-y: auto;
   padding-top: 4rem;
   display: flex;
   flex-direction: column;
@@ -119,8 +119,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  overflow-y: auto;
-  height: 60vh;
+  // overflow-y: auto;
   padding: 0;
   margin: 0;
   padding-top: 4rem;
@@ -132,9 +131,14 @@ export default {
     overflow: hidden;
     position: relative;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba($color: #000000, $alpha: 0.2);
+
     img {
       width: 100%;
-      
+      height: auto;
     }
     .overlay {
       background-color: $color-darkest-overlay;
@@ -151,6 +155,7 @@ export default {
       flex-direction: column;
       justify-content: space-around;
       padding: 2rem 0;
+      pointer-events: none;
 
       p:first-of-type {
         font-weight: 900;
@@ -169,8 +174,9 @@ export default {
       }
     }
 
-    &:hover .overlay {
+    &:hover .overlay, &:active .overlay {
       opacity: 1;
+      pointer-events: all;
     }
     
   }
@@ -204,6 +210,13 @@ export default {
 
   option {
     color: $color-darkest;
+  }
+
+  .image-title {
+  max-width: 709px;
+  width: 60%;
+  min-width: 320px;
+  margin: 3rem auto 0 auto;
   }
 
 // KIDS THEME SECTION

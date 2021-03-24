@@ -8,17 +8,30 @@
     @mousemove="setTimer"
   >
   <!-- PLAY BUTTON -->
-  <div class="playButton" @click="togglePlaying" :class="{showPlayButton: !mediaPlaying}">
+  <div class="playButton" @click="togglePlaying" :class="{showPlayButton: !mediaPlaying}" v-show="!smallScreen">
     <img :src="`${publicPath}play-circle-duotone.svg`" alt="Play" />
   </div>
     <video
+      :controls="smallScreen"
       @click.self="togglePlaying"
       :src="url"
       type="video/mp4"
       ref="videoPlayer"
       @timeupdate="setSlider"
       v-playback-rate="speed"
+      v-if="!mediaIsAudio"
     ></video>
+
+    <audio 
+      :controls="smallScreen"
+      @click.self="togglePlaying"
+      :src="url"
+      ref="videoPlayer"
+      @timeupdate="setSlider"
+      v-playback-rate="speed"
+      v-else
+      class="audioControls"
+    ></audio>
 
     <!-- If audio show poster -->
     <div v-if="mediaIsAudio" class="audio-display" :class="{audioPlaying: mediaPlaying}" @click="togglePlaying">
@@ -26,7 +39,7 @@
     </div>
 
     <!-- Controls -->
-    <div class="controls" v-show="controlsShown">
+    <div class="controls">
       <!-- Back Button  -->
       <div class="controls-top__left">
         <button @click="backPage">
@@ -43,9 +56,10 @@
         class="slider main-slider"
         ref="timeSlider"
         @input="changeTime(null)"
+        v-show="controlsShown && !smallScreen"
       />
       <!-- Bottom controls for smaller button -->
-      <div class="controls-bottom">
+      <div class="controls-bottom" v-show="controlsShown && !smallScreen">
         <!--  Left side controls for button -->
         <div class="controls-bottom__left">
           <!-- Play button -->
@@ -125,9 +139,16 @@ export default {
       mediaIsAudio: false,
       publicPath: process.env.BASE_URL,
       timer: null,
-      mediaPlaying: false
+      mediaPlaying: false,
+      windowWidth: window.innerWidth,
+      smallScreen: false,
       
     };
+  },
+  watch: {
+    windowWidth(_, newwidth) {
+      this.smallScreen = newwidth <= 800 ? true : false
+    }
   },
   props: {
     mediaId: {
@@ -137,6 +158,15 @@ export default {
   },
   mounted() {
     this.fetchMovie();
+    window.addEventListener('resize', this.onResize)
+
+    // Set original screen size state
+    this.smallScreen = window.innerWidth <= 800 ? true : false
+  },
+  beforeUnmount() { 
+    // Clear timers and window mounts
+    window.removeEventListener('resize', this.onResize); 
+    clearTimeout(this.timer);
   },
   directives: {
     playbackRate(el, binding) {
@@ -144,6 +174,9 @@ export default {
     }
   },
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth
+    },
     backPage() {
       this.$router.back();
     },
@@ -481,6 +514,14 @@ input[type="range"]::-ms-fill-upper {
 .showPlayButton {
   opacity: 1;
   pointer-events: all;
+}
+
+.audioControls {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000
 }
 
 </style>

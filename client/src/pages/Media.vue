@@ -70,6 +70,7 @@ export default {
     font-size: 2.4rem;
     transition: background-color 0.2s;
     padding: 1.5rem 2.5rem;
+    margin: 1rem 0;
     border-radius: 1rem;
 
     &:hover {
@@ -78,7 +79,4 @@ export default {
   }
 }
 
-.kidsTheme {
-  // Kids theme goes here
-}
 </style>

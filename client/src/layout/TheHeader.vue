@@ -26,12 +26,14 @@
      
     <!-- Logged in but no profile Nav -->
     <ul v-else-if="isLoggedIn">
-      <li>
+      <div>
+        <li>
         <router-link to="profiles">Profiles</router-link>
-      </li>
-      <li>
-        <a @click="logout">Logout</a>
-      </li>
+        </li>
+        <li>
+          <a @click="logout">Logout</a>
+        </li>
+      </div>
     </ul>
   </header>
 </template>
@@ -80,6 +82,7 @@ ul {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   div {
     display: flex;
@@ -98,7 +101,7 @@ ul {
 }
 
 .kidsTitle {
-
+  display: none;
   p {
     font-size: 1.8rem;
     font-weight: 800;
@@ -108,5 +111,11 @@ ul {
     background-color: $light-background-color;
   }
   
+}
+
+@media (min-width: 600px) {
+  .kidsTitle {
+    display: inline-block;
+  }
 }
 </style>

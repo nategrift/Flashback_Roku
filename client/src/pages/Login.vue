@@ -65,9 +65,8 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 30vh;
 
-
+  
   input:last-of-type {
     margin-bottom: 20p !important;
   }
