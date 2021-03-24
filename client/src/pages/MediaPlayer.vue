@@ -4,7 +4,6 @@
   <div
     class="video-player"
     ref="fullPlayer"
-    @keyup="keypress"
     @mousemove="setTimer"
   >
   <!-- PLAY BUTTON -->
@@ -158,7 +157,8 @@ export default {
   },
   mounted() {
     this.fetchMovie();
-    window.addEventListener('resize', this.onResize)
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('keyup', this.keypress);
 
     // Set original screen size state
     this.smallScreen = window.innerWidth <= 800 ? true : false
@@ -166,6 +166,7 @@ export default {
   beforeUnmount() { 
     // Clear timers and window mounts
     window.removeEventListener('resize', this.onResize); 
+    window.removeEventListener('keyup', this.keypress);
     clearTimeout(this.timer);
   },
   directives: {
