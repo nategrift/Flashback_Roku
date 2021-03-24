@@ -7,6 +7,10 @@
     @keyup="keypress"
     @mousemove="setTimer"
   >
+  <!-- PLAY BUTTON -->
+  <div class="playButton" @click="togglePlaying" :class="{showPlayButton: !mediaPlaying}">
+    <img :src="`${publicPath}play-circle-duotone.svg`" alt="Play" />
+  </div>
     <video
       @click.self="togglePlaying"
       :src="url"
@@ -459,6 +463,24 @@ input[type="range"]::-ms-fill-upper {
   img {
     animation: shake 4s ease 0s infinite normal none;
   }
+}
+
+.playButton {
+  z-index: 500;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15rem;
+  height: 15rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.showPlayButton {
+  opacity: 1;
+  pointer-events: all;
 }
 
 </style>

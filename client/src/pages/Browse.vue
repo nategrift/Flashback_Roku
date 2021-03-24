@@ -1,10 +1,10 @@
 <template>
   <div class="media" :class="{kidsTheme: isKid}">
     <!-- Title logo specific for current content section -->
-    <img :src="publicPath + 'titles/' + types + '.png'" :alt="types" />
+    <img :src="publicPath + 'titles/' + types + '.png'" :alt="types"/>
     <!-- Filter Button -->
-    <label class="range-label" for="range">Time Frame</label>
-    <select ref="range" @change="changeRange()" id="range">
+    <label class="range-label" for="range" v-show="!isKid">Time Frame</label>
+    <select ref="range" @change="changeRange()" id="range" v-show="!isKid">
       <option type="checkbox" name="range" value="all" selected>All</option>
       <option type="checkbox" name="range" value="1950">1950s</option>
       <option type="checkbox" name="range" value="1960">1960s</option>
@@ -21,8 +21,8 @@
         />
         <div class="overlay">
           <p>{{ media.media_title }}</p>
-          <p>{{ media.media_release }}</p>
-          <p>{{ media.media_runtime }}</p>
+          <p v-show="!isKid">{{ media.media_release }}</p>
+          <p v-show="!isKid">{{ media.media_runtime }}</p>
           <!-- Links to watch or view details of specific item -->
           <router-link
             :to="{ name: 'watch', params: { mediaId: media.media_id } }"
@@ -204,6 +204,32 @@ export default {
 
   option {
     color: $color-darkest;
+  }
+
+// KIDS THEME SECTION
+  .kidsTheme {
+    button {
+      transform: scale(1.2)
+    }
+    .mediaList {
+      li{
+        border-radius: 2rem;
+        width: 200px;
+        height: 291px;
+        box-shadow: 1rem 1rem 2rem rgba($color: #000000, $alpha: 0.2);
+        transition: transform 0.2s;
+        .overlay {
+          p:first-of-type {
+            font-size: 1.8rem;
+            padding: 0.4rem;
+          }
+        }
+      }
+
+      li:hover {
+        transform: scale(1.05);
+      }
+    }
   }
 
   
