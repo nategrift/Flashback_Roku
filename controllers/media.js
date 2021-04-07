@@ -45,10 +45,12 @@ exports.getMediaById = async (req, res, next) => {
     // Get comments
     media.comments = await Media.getComments(mediaId, req.level);
 
+    // To be removed later, this is for accesssibility project however noramlly I will not have transcripts or captions
+    console.log(media)
     res.status(200).json({
       ok: true,
       media: media,
-      hasLiked: hasLikedMedia.hasLiked
+      hasLiked: hasLikedMedia.hasLiked,
     });
 
   } catch (err) {

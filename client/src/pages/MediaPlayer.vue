@@ -7,6 +7,16 @@
     @keyup="keypress"
     @mousemove="setTimer"
   >
+  <!-- Transcript Modal -->
+  <div v-show="transcriptShow" class="transcript">
+    <img @click="toggleTranscript" :src="`${publicPath}times-circle-duotone.svg`" alt="Back" />
+    <h2>{{ mediaName }} Transcript:</h2>
+    <pre>{{ transcript }}</pre>
+  </div>
+  <!-- Tooltip Modal -->
+  <div v-show="tooltip" class="tooltip" ref="tooltip">
+    <p>{{ tooltip }}</p>
+  </div>
   <!-- PLAY BUTTON -->
   <div class="playButton" @click="togglePlaying" :class="{showPlayButton: !mediaPlaying}" v-show="!smallScreen">
     <img :src="`${publicPath}play-circle-duotone.svg`" alt="Play" />
@@ -20,9 +30,11 @@
       @timeupdate="setSlider"
       v-playback-rate="speed"
       v-if="!mediaIsAudio"
-    ></video>
+    >
+    <track v-if="captionsSrc" :src="`${publicPath}captions/${captionsSrc}`" label="English" kind="captions" srclang="en-us" default >
+    </video>
 
-    <audio 
+    <audio
       :controls="smallScreen"
       @click.self="togglePlaying"
       :src="url"
@@ -111,6 +123,14 @@
           <button @click="toggleSpeed">
             <img class="img-button" :src="`${publicPath}speed-solid.svg`" alt="Speed">
           </button>
+          <!-- Captions Button -->
+          <button @click="toggleCaptions" v-if="captionsSrc">
+            <img ref="captions" class="img-button" :src="`${publicPath}closed-captioning-solid.svg`" alt="Captions">
+          </button>
+          <!-- Transcript Button -->
+          <button @click="toggleTranscript" v-if="transcript">
+            <img class="img-button" :src="`${publicPath}file-alt-solid.svg`" alt="Transcript">
+          </button>
           <!-- Fullscreen Button -->
           <button @click="fullScreen">
             <img class="img-button" :src="`${publicPath}fullscreen-solid.svg`" alt="Fullscreen">
@@ -142,7 +162,10 @@ export default {
       mediaPlaying: false,
       windowWidth: window.innerWidth,
       smallScreen: false,
-      
+      captionsSrc: false,
+      transcript: false,
+      transcriptShow: false,
+      tooltip: null
     };
   },
   watch: {
@@ -163,7 +186,7 @@ export default {
     // Set original screen size state
     this.smallScreen = window.innerWidth <= 800 ? true : false
   },
-  beforeUnmount() { 
+  beforeUnmount() {
     // Clear timers and window mounts
     window.removeEventListener('resize', this.onResize); 
     clearTimeout(this.timer);
@@ -199,7 +222,14 @@ export default {
         this.url = `${this.publicPath}media/content/${response.media.type}/${response.media.media_src}`;
         this.mediaName = response.media.media_title;
         this.mediaIsAudio = response.media.type == 'audio';
-        this.posterURL = `${this.publicPath}media/posters/${response.media.media_cover}`
+        this.posterURL = `${this.publicPath}media/posters/${response.media.media_cover}`;
+        if (response.media.media_transcript) {
+          this.transcript = response.media.media_transcript;
+        }
+        if (response.media.media_captions) {
+          this.captionsSrc = response.media.media_captions;
+        }
+
 
         this.$refs.videoPlayer.load();
       } catch (err) {
@@ -302,6 +332,22 @@ export default {
           break;
       }
     },
+    toggleCaptions() {
+      const video = this.$refs.videoPlayer;
+      const captions = this.$refs.captions;
+
+      if (video.textTracks[0].mode == "hidden") {
+        video.textTracks[0].mode = "showing";
+        captions.src = `${this.publicPath}closed-captioning-solid.svg`;
+      } else {
+        video.textTracks[0].mode = "hidden";
+        captions.src = `${this.publicPath}closed-captioning-light.svg`;
+      }
+
+    },
+    toggleTranscript() {
+      this.transcriptShow = !this.transcriptShow
+    },
   },
 };
 </script>
@@ -344,7 +390,7 @@ $player-accent: #43e5f7;
   font-weight: bold;
   background-color: transparent;
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -355,6 +401,8 @@ $player-accent: #43e5f7;
   display: inline;
   margin: 0;
   padding: 4px 12px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .controls-bottom {
@@ -442,8 +490,8 @@ input[type="range"]::-ms-fill-upper {
   width: 100px;
 }
 .img-button {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .speed-options {
@@ -523,5 +571,31 @@ input[type="range"]::-ms-fill-upper {
   transform: translateX(-50%);
   z-index: 1000
 }
+
+.transcript {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  background-color: white;
+  color: black;
+  height: 100vh;
+  overflow-y: auto;
+  font-size: 20px;
+  width: 100%;
+
+  img {
+    width: 4rem;
+    margin: 2rem 0;
+  }
+
+  p {
+    max-width: 60%;
+    line-height: 30px;
+    font-size: 20px;
+    margin: 0 auto;
+  }
+}
+
 
 </style>
