@@ -5,13 +5,13 @@
 ***NOTE for links below:** It might get you to login or sign up first. Login or sign up and then click the link here again*
 
 **Audio Example**
-[Live Audio Example](https://flashback.nategrift.com/media/watch/7)
+[Live Audio Example](https://flashback.nategrift.com/media/watch/8)
 
 **Video 1 Example**
-[Live Movie Example](https://flashback.nategrift.com/media/watch/16)
+[Live Movie Example](https://flashback.nategrift.com/media/watch/14)
 
 **Video 2 Example**
-[Live Tvshow Example](https://flashback.nategrift.com/media/watch/27)
+[Live Tvshow Example](https://flashback.nategrift.com/media/watch/24)
 
 **Video player source**
 [Github .vue file](https://github.com/nategrift/Grift_N_Mellor_S_Roku_Flashback/blob/main/client/src/pages/MediaPlayer.vue)
@@ -42,10 +42,13 @@ In addition to all this, I need to make sure it is mobile friendly.  Creating a 
 
 4. Add the ability to adjust speed.
 
-5. ~~Captions~~: **Unable to do as they are temp videos, in a production video I would add captions provided by the movie**
-    - Add captions to video
+5. Captions
+    - Added captions to videos
 
-6. User Experience is clean and easy to see, tooltips for what the keybinds are.
+6. Transcript
+    - Added transcripts to videos and audio which can be found with the paper looking button on the right.
+
+7. User Experience is clean and easy to see with large font.
 
 ### References
 
