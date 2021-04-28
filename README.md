@@ -45,7 +45,6 @@ Purpose of this project was to grow knowledge in created web applications that c
 ### Authors
 
 - Developer - Nate Grift
-- Designer - Spencer Mellor
 
 ### Design Prototype
 
