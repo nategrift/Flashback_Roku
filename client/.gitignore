@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
-/dist
+# removed due to not enough ram on server, and I don't wanna pay for more ram
+#/dist
 
 public/media
 
