@@ -3,7 +3,7 @@
 # Flashback 
 ### A Roku App
 
-Currently Live at [https://flashback.nategrift.com](http://flashback.nategrift.com)
+Currently Live at [https://flashback.nategrift.com](https://flashback.nategrift.com)
 
 [Link to Api Documentation](api-docs.md)
 
